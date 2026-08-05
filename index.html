@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>她的故事：在光与影之间 · Her Story: Between Light and Shadow</title>
+<style>
+  :root{
+    --paper:  #f7f1e6;   /* 光 · 纸白 */
+    --ink:    #1b1a18;   /* 影 · 墨色 */
+    --gold:   #b39a5f;   /* 光 · 金色点缀 */
+    --grey:   #8a857a;   /* 次级文字 */
+    --line:   rgba(27,26,24,.14);
+    --shadow: 0 14px 40px rgba(27,26,24,.14);
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,serif;
+    color:var(--ink); background:var(--paper); line-height:1.7;
+  }
+  ::selection{ background:var(--gold); color:#fff; }
+
+  /* ===== 顶部导航 ===== */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 5vw; mix-blend-mode:difference; color:#fff;
+    font-size:13px; letter-spacing:.18em;
+  }
+  nav .brand{ font-weight:600; }
+  nav .right{ display:flex; align-items:center; gap:22px; }
+  nav a{ color:inherit; text-decoration:none; opacity:.75; }
+  nav a:hover{ opacity:1; }
+  .lang-btn{
+    background:none; border:1px solid currentColor; color:inherit;
+    font:inherit; letter-spacing:.15em; padding:5px 13px; border-radius:2px;
+    cursor:pointer; opacity:.9; transition:opacity .2s;
+  }
+  .lang-btn:hover{ opacity:1; }
+
+  /* ===== Hero：光 / 影 左右分屏（带渐变） ===== */
+  .hero{
+    display:grid; grid-template-columns:1fr 1fr; min-height:100vh;
+  }
+  .hero .light, .hero .shadow{
+    display:flex; flex-direction:column; justify-content:center;
+    padding:18vh 6vw 10vh; position:relative; overflow:hidden;
+  }
+  .hero .light{
+    background:linear-gradient(180deg, #fcf8ef 0%, var(--paper) 55%, #efe2c8 100%);
+    color:var(--ink);
+  }
+  .hero .shadow{
+    background:linear-gradient(180deg, #26231f 0%, var(--ink) 55%, #121110 100%);
+    color:var(--paper);
+  }
+  .hero .tag{
+    font-size:12px; letter-spacing:.4em; opacity:.55; margin-bottom:26px;
+  }
+  .hero h1{
+    font-size:clamp(40px, 7vw, 96px); font-weight:700; line-height:1.06;
+    letter-spacing:.06em; font-family:Georgia,"Songti SC","SimSun",serif;
+  }
+  .hero h1 .en{
+    display:block; font-size:clamp(16px,2vw,24px); font-weight:400;
+    letter-spacing:.22em; margin-top:20px; opacity:.7;
+    font-family:"PingFang SC","Hiragino Sans GB",sans-serif;
+  }
+  .hero .divider{
+    position:absolute; top:0; bottom:0; left:50%; width:1px;
+    background:linear-gradient(180deg, transparent, var(--gold), transparent);
+  }
+  .hero .sub{
+    margin-top:34px; font-size:15px; opacity:.75; max-width:34ch;
+  }
+  .hero .seam-note{
+    position:absolute; bottom:34px; width:100%; left:0; text-align:center;
+    font-size:12px; letter-spacing:.35em; opacity:.5;
+  }
+  @media (max-width:760px){
+    .hero{ grid-template-columns:1fr; min-height:0; }
+    .hero .divider{ display:none; }
+    .hero .light{ padding-top:22vh; }
+  }
+
+  /* ===== 通用节 ===== */
+  section{ padding:90px 6vw; }
+  .kicker{
+    font-size:12px; letter-spacing:.45em; color:var(--gold);
+    text-transform:uppercase; margin-bottom:18px;
+  }
+  h2{
+    font-size:clamp(26px,4vw,42px); font-family:Georgia,"Songti SC",serif;
+    letter-spacing:.04em; margin-bottom:22px;
+  }
+  h2 .en{ font-size:.45em; font-weight:400; letter-spacing:.25em; opacity:.6; margin-top:8px; }
+  .lead{ max-width:64ch; color:#55504a; font-size:16px; }
+
+  /* ===== 概念：光与影 ===== */
+  .concept{ background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .concept .core{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:40px; margin:44px 0 10px;
+  }
+  .pillar{ padding:30px 0; border-top:1px solid var(--line); }
+  .pillar .word{ font-family:Georgia,"Songti SC",serif; font-size:30px; letter-spacing:.2em; }
+  .pillar .cn{ font-size:14px; opacity:.7; margin-top:4px; letter-spacing:.15em; }
+  .pillar p{ font-size:15px; color:#55504a; margin-top:14px; max-width:44ch; }
+  .pillar.light .word{ color:var(--ink); }
+  .pillar.shadow .word{ color:var(--gold); }
+  .quote{
+    font-family:Georgia,"Songti SC",serif; font-size:clamp(20px,3vw,30px);
+    letter-spacing:.06em; margin-top:56px; padding-top:30px;
+    border-top:1px solid var(--line); color:var(--ink);
+  }
+  .quote small{
+    display:block; font-family:"PingFang SC",sans-serif; font-size:13px;
+    letter-spacing:.3em; opacity:.6; margin-top:12px;
+  }
+  @media (max-width:760px){ .concept .core{ grid-template-columns:1fr; } }
+
+  /* ===== 作品画廊 ===== */
+  .works{ background:var(--paper); }
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:22px;
+    margin-top:44px;
+  }
+  .card{
+    position:relative; cursor:pointer; overflow:hidden; border-radius:4px;
+    background:#000; aspect-ratio:3/4;
+    box-shadow:0 2px 10px rgba(27,26,24,.08);
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+  .card:hover{ transform:translateY(-5px); box-shadow:var(--shadow); }
+  /* 肖像占位：光→影 渐变 */
+  .card .face{
+    position:absolute; inset:0;
+    background:linear-gradient(160deg, #f2e7d0 0%, #d8c8a6 42%, #3a352c 100%);
+    display:flex; align-items:flex-end; padding:18px;
+    transition:filter .35s ease;
+  }
+  .card:hover .face{ filter:brightness(.92); }
+  .card .num{
+    position:absolute; top:14px; left:16px; font-size:13px; letter-spacing:.25em; color:#fff;
+    mix-blend-mode:difference; opacity:.85;
+  }
+  .card .meta{ position:relative; z-index:2; color:#fff; text-shadow:0 1px 8px rgba(0,0,0,.4); }
+  .card .role{ font-size:15px; font-weight:600; letter-spacing:.05em; }
+  .card .role-en{ font-size:11px; opacity:.75; margin-top:2px; letter-spacing:.08em; }
+  .card .listen{
+    position:absolute; right:14px; bottom:14px; z-index:3;
+    display:flex; align-items:center; gap:7px;
+    font-size:11px; letter-spacing:.15em; color:#fff; opacity:0;
+    transform:translateY(6px); transition:opacity .3s, transform .3s;
+  }
+  .card:hover .listen{ opacity:1; transform:none; }
+  .card .listen .dot{
+    width:22px; height:22px; border-radius:50%; background:var(--gold);
+    display:flex; align-items:center; justify-content:center; font-size:10px; color:#fff;
+  }
+  /* 占位卡（待揭晓） */
+  .card.tba .face{
+    background:repeating-linear-gradient(45deg, #efe6d4 0 12px, #e6dcc6 12px 24px);
+    align-items:center; justify-content:center; padding:0;
+  }
+  .card.tba .mask{ text-align:center; color:#7a746a; }
+  .card.tba .mask .m1{ font-size:13px; letter-spacing:.25em; }
+  .card.tba .mask .m2{ font-size:10px; letter-spacing:.2em; margin-top:8px; opacity:.7; }
+
+  /* ===== 聆听弹层 ===== */
+  .overlay{
+    position:fixed; inset:0; z-index:100; display:none;
+    align-items:center; justify-content:center; padding:5vh 5vw;
+    background:rgba(20,19,17,.78); backdrop-filter:blur(6px);
+  }
+  .overlay.open{ display:flex; }
+  .panel{
+    display:grid; grid-template-columns:300px 1fr; width:min(860px,100%);
+    max-height:86vh; overflow:auto; background:var(--paper); border-radius:6px;
+    box-shadow:0 30px 80px rgba(0,0,0,.5); position:relative;
+  }
+  .panel .cover{
+    background:linear-gradient(160deg,#f2e7d0 0%,#d8c8a6 45%,#3a352c 100%);
+    min-height:320px; position:relative;
+    display:flex; align-items:flex-end; padding:22px;
+  }
+  .panel .cover .cnum{ position:absolute; top:16px; left:20px; font-size:14px; letter-spacing:.3em; color:#fff; mix-blend-mode:difference; }
+  .panel .cover .crole{ color:#fff; text-shadow:0 1px 8px rgba(0,0,0,.4); }
+  .panel .crole b{ display:block; font-size:19px; letter-spacing:.04em; }
+  .panel .crole span{ font-size:12px; opacity:.8; }
+  .panel .body{ padding:38px 40px; }
+  .panel .body .pno{ font-size:12px; letter-spacing:.3em; color:var(--gold); }
+  .panel .body h3{ font-family:Georgia,"Songti SC",serif; font-size:26px; margin:10px 0 16px; }
+  .panel .body p{ color:#55504a; font-size:15px; margin-bottom:26px; }
+  .play{
+    display:inline-flex; align-items:center; gap:12px; border:none; cursor:pointer;
+    background:var(--ink); color:var(--paper); font-size:13px; letter-spacing:.2em;
+    padding:14px 24px; border-radius:2px; transition:background .25s, transform .15s;
+  }
+  .play:hover{ background:#000; transform:scale(1.02); }
+  .play.playing .spinner{ animation:spin 1s linear infinite; }
+  .play .note{ display:block; font-size:10px; opacity:.55; letter-spacing:.1em; margin-top:4px; }
+  .close{
+    position:absolute; top:12px; right:16px; z-index:5; border:none; background:none;
+    font-size:26px; color:var(--paper); cursor:pointer; mix-blend-mode:difference; line-height:1;
+  }
+  .close:hover{ opacity:.7; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  @media (max-width:760px){
+    .panel{ grid-template-columns:1fr; }
+    .panel .cover{ min-height:220px; }
+  }
+
+  /* ===== 关于 & 页脚 ===== */
+  .about{ background:var(--ink); color:var(--paper); }
+  .about h2 .en{ color:var(--paper); }
+  .about .lead{ color:#cfc9bc; }
+  .about .cols{ display:grid; grid-template-columns:repeat(3,1fr); gap:36px; margin-top:44px; }
+  .about .col h4{ font-size:13px; letter-spacing:.3em; color:var(--gold); margin-bottom:12px; }
+  .about .col p{ font-size:14px; color:#cfc9bc; }
+  @media (max-width:760px){ .about .cols{ grid-template-columns:1fr; } }
+  footer{
+    background:#121110; color:#8f897d; text-align:center;
+    padding:34px 5vw; font-size:12px; letter-spacing:.15em; line-height:2;
+  }
+  footer a{ color:var(--gold); text-decoration:none; }
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .7s, transform .7s; }
+  .reveal.in{ opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="brand" data-i18n="nav.brand">她的故事 · HER STORY</span>
+  <span class="right">
+    <a href="#concept" data-i18n="nav.concept">概念</a>
+    <a href="#works" data-i18n="nav.works">作品</a>
+    <a href="#about" data-i18n="nav.about">关于</a>
+    <button class="lang-btn" id="langBtn" aria-label="切换语言">EN</button>
+  </span>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="light">
+    <div class="tag" data-i18n="hero.light.tag">光 · LIGHT</div>
+    <h1 data-i18n="hero.light.h1">她 的 故 事<span class="en">HER STORY</span></h1>
+    <p class="sub" data-i18n="hero.light.sub">可见性与被识别。<br>被看见、被定义、被观看着的显性人生。</p>
+  </div>
+  <div class="divider"></div>
+  <div class="shadow">
+    <div class="tag" data-i18n="hero.shadow.tag">影 · SHADOW</div>
+    <h1 data-i18n="hero.shadow.h1">在光与影之间<span class="en">BETWEEN LIGHT &amp; SHADOW</span></h1>
+    <p class="sub" data-i18n="hero.shadow.sub">未被言说与被遮蔽的经验。<br>沉默、未知、表象之下的真实。</p>
+  </div>
+  <div class="seam-note" data-i18n="hero.seam">跨媒介叙事艺术展 · 线上展 | ONLINE EDITION</div>
+</header>
+
+<!-- ===== 概念 ===== -->
+<section class="concept" id="concept">
+  <div class="kicker" data-i18n="concept.kicker">Curatorial Concept · 策展概念</div>
+  <h2 data-i18n="concept.h2">可见，但未被充分理解<span class="en">Visible, yet rarely fully understood</span></h2>
+  <p class="lead" data-i18n="concept.lead">在当代语境中，亚裔女性常常处于一种"可见但未被充分理解"的位置——形象被频繁观看，复杂经验却较少进入公共叙事。本展以<b>肖像摄影</b>与<b>第一人称声音</b>的并置建立张力：图像呈现"被观看"的客体状态，声音则构成"自我叙述"的主体觉醒。</p>
+
+  <div class="core">
+    <div class="pillar light">
+      <div class="word" data-i18n="concept.light.word">光</div>
+      <div class="cn" data-i18n="concept.light.cn">LIGHT</div>
+      <p data-i18n="concept.light.p">指向可见性与被识别。代表着那些被看见、被定义的显性经验与表达。</p>
+    </div>
+    <div class="pillar shadow">
+      <div class="word" data-i18n="concept.shadow.word">影</div>
+      <div class="cn" data-i18n="concept.shadow.cn">SHADOW</div>
+      <p data-i18n="concept.shadow.p">指向未被言说与被遮蔽的经验。象征着沉默、未知与潜藏在表象之下的真实。</p>
+    </div>
+  </div>
+
+  <div class="quote reveal" data-i18n="concept.quote">在两者之间建立通道，使观众从"观看"转向"倾听"。<small>To build a passage between the two — from seeing, toward listening.</small></div>
+</section>
+
+<!-- ===== 作品画廊 ===== -->
+<section class="works" id="works">
+  <div class="kicker" data-i18n="works.kicker">Works · 作品</div>
+  <h2 data-i18n="works.h2">十六位女性，十六段声音<span class="en">16 Women · 16 Voices</span></h2>
+  <p class="lead" data-i18n="works.lead">点击任意肖像，聆听她自己的故事。目前为原型版本，肖像与音频素材将陆续接入。</p>
+  <div class="grid" id="grid"></div>
+</section>
+
+<!-- ===== 关于 ===== -->
+<section class="about" id="about">
+  <div class="kicker" data-i18n="about.kicker">About · 关于</div>
+  <h2 data-i18n="about.h2">关于线上展<span class="en">About the Online Edition</span></h2>
+  <p class="lead" data-i18n="about.lead">《她的故事：在光与影之间》依托图像、声音两大媒介搭建多层叙事场域。本线上展呈现 16 位拥有多元文化、跨国成长背景的亚裔女性——她们来自科技、学术、金融、医疗、时尚、写作等多个行业。</p>
+  <div class="cols">
+    <div class="col"><h4 data-i18n="about.col1.h">主办 · CURATED BY</h4><p data-i18n="about.col1.p">AWDPI 亚裔女性国际发展计划<br>Asian Women's Development Programme International</p></div>
+    <div class="col"><h4 data-i18n="about.col2.h">呈现 · PRESENTED AT</h4><p data-i18n="about.col2.p">2026 Chinese Culture Week<br>8 月 16 日 · 艺术剧场女性力量对谈</p></div>
+    <div class="col"><h4 data-i18n="about.col3.h">形式 · FORMAT</h4><p data-i18n="about.col3.p">肖像摄影 · 第一人称声音档案<br>线上展 · Online Exhibition</p></div>
+  </div>
+</section>
+
+<footer>
+  © 2026 AWDPI · <a href="https://awdpi.org" target="_blank" rel="noopener">awdpi.org</a><br>
+  <span data-i18n="footer.line">她的故事：在光与影之间 · 线上展 ｜ HER STORY: BETWEEN LIGHT AND SHADOW · ONLINE EDITION</span>
+</footer>
+
+<!-- ===== 聆听弹层 ===== -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="panel">
+    <button class="close" id="closeBtn" aria-label="关闭">×</button>
+    <div class="cover">
+      <span class="cnum" id="oNum">01</span>
+      <div class="crole"><b id="oRole">标题</b><span id="oRoleEn">Subtitle</span></div>
+    </div>
+    <div class="body">
+      <div class="pno" id="oPno">采访者 01</div>
+      <h3 id="oTitle">她的故事</h3>
+      <p id="oBio">故事内容……</p>
+      <button class="play" id="playBtn"><span class="spinner">▶</span><span id="playLabel">播放声音档案 / Play Audio</span></button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   作品数据 —— 后续替换：填入真实姓名 / 肖像 / 音频链接即可
+   每条：num 编号 · role 职业 · roleEn 英文职业 · bio 简介 · bioEn 英文简介 · audio 音频URL（留空=待接入）
+   ========================================================= */
+const STORIES = [
+  {num:"01", role:"科技与医疗创新创业者", roleEn:"Founder · Tech & Medical Innovation",
+   bio:"生物科学与结构研究背景，参与国家级科研项目并发表学术成果；后进入英国顶尖科研机构与咨询行业积累十余年经验。近年创立科技公司，将人工智能应用于医疗与教育领域。作为在英国长期发展并兼顾家庭角色的女性，她的经验呈现出科研、商业与家庭之间的复杂协商关系。",
+   bioEn:"With a background in bioscience and structural research, she contributed to national research projects and published academic work, then spent over a decade between a top UK research institute and international consulting. She recently founded a tech company applying AI to healthcare and education. As a woman building a long-term career in the UK while balancing family, her experience reflects the complex negotiation between research, business, and home."},
+  {num:"02", role:"学术研究者 · 国际关系 / 女性主义", roleEn:"Academic Researcher · IR & Feminism",
+   bio:"国际关系方向博士研究生，学术工作结合后殖民理论与女性主义视角，探讨权力结构与国家叙事。拥有澳大利亚与英国的多国教育背景，在英国高校持续从事研究与教学。她的研究与个人经历交织，使她在'观察世界'与'被世界定义'之间形成独特张力。",
+   bioEn:"A doctoral researcher in international relations, combining postcolonial theory and feminist perspectives to examine power structures and national narratives. Educated across Australia and the UK, she continues research and teaching in British academia. Her research and personal experience intertwine, creating a distinctive tension between 'observing the world' and 'being defined by the world.'"},
+  {num:"03", role:"金融与会计领域学者", roleEn:"Scholar · Finance & Accounting",
+   bio:"英国高校讲师，研究领域涵盖数字化企业报告、行为金融与财务认知。进入学术界前，曾在国际会计师事务所及上市企业担任核心财务岗位，兼具行业经验与学术研究能力，研究成果发表于国际期刊。",
+   bioEn:"A UK university lecturer researching digital corporate reporting, behavioral finance, and financial cognition. Before academia, she held core finance roles at an international accounting firm and a listed company, combining industry experience with academic rigor; her research has been published in international journals."},
+  {num:"04", role:"医疗与社会影响倡导者", roleEn:"Advocate · Health & Social Impact",
+   bio:"在英国顶尖高校攻读医疗与设计相关专业，致力于推动健康公平与社会包容议题。曾在企业与媒体行业工作，发起心理健康倡议、少数族裔医疗资源公平及女性健康等社会行动。创伤、移民适应与自我修复的经历，成为她推动公共议题的重要动力。",
+   bioEn:"Studying healthcare and design at a leading UK university, she works to advance health equity and social inclusion. After working in corporate and media industries, she launched initiatives on mental health, ethnic-minority healthcare access, and women's health. Experiences of trauma, migration, and self-repair became the driving force of her public advocacy."},
+  {num:"05", role:"数据与科技从业者 · 内容创作者", roleEn:"Data & Tech Professional · Content Creator",
+   bio:"在英国数据与科技行业工作，拥有从商业与金融领域转型数据分析的跨专业背景。求学与求职中经历语言、文化与职业路径的不确定性，并通过持续实践完成转型。同时通过数字平台分享个人经验，形成对年轻女性具有影响力的公共表达。",
+   bioEn:"Working in the UK's data and tech sector, she transitioned across disciplines from business and finance into data analytics. Navigating uncertainty in language, culture, and career during study and job hunting, she completed her transformation through sustained practice — and now shares her experience on digital platforms, shaping a public voice for younger women."},
+  {num:"06", role:"时尚与创意产业创业者", roleEn:"Founder · Fashion & Creative",
+   bio:"从中国城市出发，经由非线性路径进入时尚行业。早期曾在高度男性主导的劳动环境中工作，在资源有限的情况下进入创意产业，其后创业建立个人品牌，目前在伦敦延续其创作与商业路径。",
+   bioEn:"Starting from a Chinese city, she entered fashion through a non-linear path. Early years included working in highly male-dominated environments and entering the creative industry with limited resources. She later founded her own brand and now continues her creative and commercial journey in London."},
+  /* —— 以下为占位，等待其余参与者资料 —— */
+  {num:"07", role:"待揭晓", roleEn:"To be revealed", bio:"更多故事正在收录中。", bioEn:"More stories are being gathered.", tba:true},
+  {num:"08", role:"待揭晓", roleEn:"To be revealed", bio:"", bioEn:"", tba:true},
+  {num:"09", role:"待揭晓", roleEn:"To be revealed", bio:"", bioEn:"", tba:true},
+  {num:"10", role:"待揭晓", roleEn:"To be revealed", bio:"", bioEn:"", tba:true},
+  {num:"11", role:"待揭晓", roleEn:"To be revealed", bio:"", bioEn:"", tba:true},
+  {num:"12", role:"待揭晓", roleEn:"To be revealed", bio:"", bioEn:"", tba:true},
+  {num:"13", role:"待揭晓", roleEn:"To be revealed", bio:"", bioEn:"", tba:true},
+  {num:"14", role:"待揭晓", roleEn:"To be revealed", bio:"", bioEn:"", tba:true},
+  {num:"15", role:"待揭晓", roleEn:"To be revealed", bio:"", bioEn:"", tba:true},
+  {num:"16", role:"待揭晓", roleEn:"To be revealed", bio:"", bioEn:"", tba:true},
+];
+
+/* ================= 中英切换 ================= */
+const I18N = {
+  zh: {
+    "nav.brand":"她的故事 · HER STORY",
+    "nav.concept":"概念","nav.works":"作品","nav.about":"关于",
+    "hero.light.tag":"光 · LIGHT",
+    "hero.light.h1":'她 的 故 事<span class="en">HER STORY</span>',
+    "hero.light.sub":"可见性与被识别。<br>被看见、被定义、被观看着的显性人生。",
+    "hero.shadow.tag":"影 · SHADOW",
+    "hero.shadow.h1":'在光与影之间<span class="en">BETWEEN LIGHT &amp; SHADOW</span>',
+    "hero.shadow.sub":"未被言说与被遮蔽的经验。<br>沉默、未知、表象之下的真实。",
+    "hero.seam":"跨媒介叙事艺术展 · 线上展 | ONLINE EDITION",
+    "concept.kicker":"Curatorial Concept · 策展概念",
+    "concept.h2":'可见，但未被充分理解<span class="en">Visible, yet rarely fully understood</span>',
+    "concept.lead":'在当代语境中，亚裔女性常常处于一种"可见但未被充分理解"的位置——形象被频繁观看，复杂经验却较少进入公共叙事。本展以<b>肖像摄影</b>与<b>第一人称声音</b>的并置建立张力：图像呈现"被观看"的客体状态，声音则构成"自我叙述"的主体觉醒。',
+    "concept.light.word":"光","concept.light.cn":"LIGHT",
+    "concept.light.p":"指向可见性与被识别。代表着那些被看见、被定义的显性经验与表达。",
+    "concept.shadow.word":"影","concept.shadow.cn":"SHADOW",
+    "concept.shadow.p":"指向未被言说与被遮蔽的经验。象征着沉默、未知与潜藏在表象之下的真实。",
+    "concept.quote":'在两者之间建立通道，使观众从"观看"转向"倾听"。<small>To build a passage between the two — from seeing, toward listening.</small>',
+    "works.kicker":"Works · 作品",
+    "works.h2":'十六位女性，十六段声音<span class="en">16 Women · 16 Voices</span>',
+    "works.lead":"点击任意肖像，聆听她自己的故事。目前为原型版本，肖像与音频素材将陆续接入。",
+    "works.listen":"聆听 · LISTEN",
+    "about.kicker":"About · 关于",
+    "about.h2":'关于线上展<span class="en">About the Online Edition</span>',
+    "about.lead":"《她的故事：在光与影之间》依托图像、声音两大媒介搭建多层叙事场域。本线上展呈现 16 位拥有多元文化、跨国成长背景的亚裔女性——她们来自科技、学术、金融、医疗、时尚、写作等多个行业。",
+    "about.col1.h":"主办 · CURATED BY","about.col1.p":"AWDPI 亚裔女性国际发展计划<br>Asian Women's Development Programme International",
+    "about.col2.h":"呈现 · PRESENTED AT","about.col2.p":"2026 Chinese Culture Week<br>8 月 16 日 · 艺术剧场女性力量对谈",
+    "about.col3.h":"形式 · FORMAT","about.col3.p":"肖像摄影 · 第一人称声音档案<br>线上展 · Online Exhibition",
+    "footer.line":"她的故事：在光与影之间 · 线上展 ｜ HER STORY: BETWEEN LIGHT AND SHADOW · ONLINE EDITION",
+    "modal.title":"她的故事 · Her Story",
+    "modal.pno":"采访者 {n}",
+    "modal.playReady":"播放声音档案 / Play Audio",
+    "modal.playPending":"声音档案待接入 / Audio incoming",
+  },
+  en: {
+    "nav.brand":"HER STORY",
+    "nav.concept":"Concept","nav.works":"Works","nav.about":"About",
+    "hero.light.tag":"LIGHT · THE SEEN",
+    "hero.light.h1":'HER STORY<span class="en">Between Light and Shadow</span>',
+    "hero.light.sub":"Visibility and recognition.<br>The seen, the defined — lives lived in the open.",
+    "hero.shadow.tag":"SHADOW · THE UNSPOKEN",
+    "hero.shadow.h1":'BETWEEN LIGHT &amp; SHADOW<span class="en">Her Story · Online Edition</span>',
+    "hero.shadow.sub":"The unspoken, the veiled.<br>Silence — the truth beneath the surface.",
+    "hero.seam":"CROSS-MEDIA NARRATIVE EXHIBITION · ONLINE EDITION",
+    "concept.kicker":"Curatorial Concept",
+    "concept.h2":'Visible, yet rarely fully understood<span class="en">被看见，却很少真正被理解</span>',
+    "concept.lead":'In contemporary contexts, Asian women often occupy a position of being "visible yet rarely fully understood" — their images are frequently viewed, yet their complex experiences rarely enter public narrative. This exhibition sets up a tension by juxtaposing <b>portrait photography</b> with <b>first-person audio</b>: the image shows the object state of "being seen," while the voice constitutes the subject awakening of "self-narration."',
+    "concept.light.word":"Light","concept.light.cn":"光",
+    "concept.light.p":"Points to visibility and recognition — the explicit experiences and expressions that are seen and defined.",
+    "concept.shadow.word":"Shadow","concept.shadow.cn":"影",
+    "concept.shadow.p":"Points to the unspoken and veiled — the silence, the unknown, and the truths hidden beneath the surface.",
+    "concept.quote":'To build a passage between the two — from seeing, toward listening.<small>在两者之间建立通道，使观众从"观看"转向"倾听"。</small>',
+    "works.kicker":"Works",
+    "works.h2":'16 Women · 16 Voices<span class="en">十六位女性，十六段声音</span>',
+    "works.lead":"Click any portrait to hear her own story. This is a prototype — portraits and audio are being added.",
+    "works.listen":"LISTEN",
+    "about.kicker":"About",
+    "about.h2":'About the Online Edition<span class="en">关于线上展</span>',
+    "about.lead":'"Her Story: Between Light and Shadow" builds a multi-layered narrative field across image and sound. This online edition presents 16 Asian women with multicultural, cross-border backgrounds — from tech, academia, finance, healthcare, fashion, and writing.',
+    "about.col1.h":"Curated by","about.col1.p":"Asian Women's Development Programme International<br>AWDPI 亚裔女性国际发展计划",
+    "about.col2.h":"Presented at","about.col2.p":"2026 Chinese Culture Week<br>Aug 16 · Women in Art Industry Talk",
+    "about.col3.h":"Format","about.col3.p":"Portrait Photography · First-person Audio<br>Online Exhibition",
+    "footer.line":"HER STORY: BETWEEN LIGHT AND SHADOW · ONLINE EDITION ｜ 她的故事：在光与影之间 · 线上展",
+    "modal.title":"Her Story",
+    "modal.pno":"Interviewee {n}",
+    "modal.playReady":"Play Audio",
+    "modal.playPending":"Audio file incoming",
+  }
+};
+
+let LANG = localStorage.getItem("herstory-lang") || "zh";
+const grid = document.getElementById("grid");
+const overlay = document.getElementById("overlay");
+let audioEl = null;
+let currentStory = null;
+
+const t = key => (I18N[LANG] && I18N[LANG][key] !== undefined) ? I18N[LANG][key] : (I18N.zh[key] ?? key);
+
+function applyLang(){
+  document.documentElement.lang = LANG === "zh" ? "zh-CN" : "en";
+  document.title = LANG === "zh"
+    ? "她的故事：在光与影之间 · Her Story: Between Light and Shadow"
+    : "Her Story: Between Light and Shadow · 她的故事：在光与影之间";
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const k = el.dataset.i18n;
+    if (I18N[LANG][k] !== undefined) el.innerHTML = I18N[LANG][k];
+  });
+  document.getElementById("langBtn").textContent = LANG === "zh" ? "EN" : "中";
+  renderCards();
+  if (overlay.classList.contains("open") && currentStory) renderStory(currentStory);
+}
+
+/* ================= 画廊渲染 ================= */
+function renderCards(){
+  grid.innerHTML = STORIES.map((s,i)=>{
+    if(s.tba){
+      return `<div class="card tba">
+        <div class="face"><div class="mask"><div class="m1">${s.num}</div><div class="m2">STORY PENDING</div></div></div>
+        <span class="num">${s.num}</span>
+      </div>`;
+    }
+    const role = LANG === "zh" ? s.role : s.roleEn;
+    const sub  = LANG === "zh" ? s.roleEn : s.role;
+    return `<div class="card" data-i="${i}">
+      <div class="face"><span class="num">${s.num}</span>
+        <div class="meta">
+          <div class="role">${role}</div>
+          <div class="role-en">${sub}</div>
+        </div>
+        <span class="listen"><span class="dot">▶</span>${t("works.listen")}</span>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+grid.addEventListener("click", e=>{
+  const card = e.target.closest(".card");
+  if(!card || card.classList.contains("tba")) return;
+  currentStory = STORIES[card.dataset.i];
+  renderStory(currentStory);
+});
+
+function renderStory(s){
+  if(audioEl){ audioEl.pause(); audioEl = null; }
+  const zh = LANG === "zh";
+  document.getElementById("oNum").textContent = s.num;
+  document.getElementById("oRole").textContent = zh ? s.role : s.roleEn;
+  document.getElementById("oRoleEn").textContent = zh ? s.roleEn : s.role;
+  document.getElementById("oPno").textContent = t("modal.pno").replace("{n}", s.num);
+  document.getElementById("oTitle").textContent = t("modal.title");
+  document.getElementById("oBio").textContent = zh ? (s.bio || "") : (s.bioEn || s.bio || "");
+  const btn = document.getElementById("playBtn");
+  btn.classList.remove("playing");
+  btn.dataset.audio = s.audio || "";
+  document.getElementById("playLabel").textContent = s.audio ? t("modal.playReady") : t("modal.playPending");
+  overlay.classList.add("open");
+  overlay.setAttribute("aria-hidden","false");
+}
+
+function closeOverlay(){
+  overlay.classList.remove("open");
+  overlay.setAttribute("aria-hidden","true");
+  if(audioEl){ audioEl.pause(); audioEl = null; }
+}
+
+document.getElementById("closeBtn").addEventListener("click", closeOverlay);
+overlay.addEventListener("click", e=>{ if(e.target === overlay) closeOverlay(); });
+document.addEventListener("keydown", e=>{ if(e.key === "Escape") closeOverlay(); });
+
+document.getElementById("playBtn").addEventListener("click", function(){
+  const url = this.dataset.audio;
+  if(!url){
+    alert(LANG === "zh"
+      ? "声音档案素材待接入——正式版将在此播放她自己的声音。\n\nAudio file not connected yet."
+      : "Audio file not connected yet — the final version will play her own voice here.");
+    return;
+  }
+  if(audioEl && !audioEl.paused){ audioEl.pause(); this.classList.remove("playing"); return; }
+  audioEl = new Audio(url);
+  audioEl.play(); this.classList.add("playing");
+  audioEl.onended = ()=> this.classList.remove("playing");
+});
+
+document.getElementById("langBtn").addEventListener("click", ()=>{
+  LANG = LANG === "zh" ? "en" : "zh";
+  localStorage.setItem("herstory-lang", LANG);
+  applyLang();
+});
+
+/* 滚动渐显 */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{ if(en.isIntersecting) en.target.classList.add("in"); });
+},{threshold:.15});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+
+applyLang();
+</script>
+</body>
+</html>
