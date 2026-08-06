@@ -227,7 +227,6 @@
   .org{ display:flex; flex-direction:column; align-items:center; gap:12px; text-decoration:none; color:var(--paper); max-width:360px; text-align:center; }
   .org .org-logo{ height:54px; display:flex; align-items:center; justify-content:center; }
   .org .org-logo img{ height:100%; width:auto; }
-  .org .org-logo.viva{ font-family:Georgia,"Songti SC",serif; font-weight:700; font-size:19px; letter-spacing:.22em; border:1px solid rgba(247,241,230,.4); padding:12px 16px; opacity:.85; }
   .org .org-name{ font-size:12px; letter-spacing:.08em; opacity:.8; }
   .org:hover .org-name{ opacity:1; }
   .org-desc{ font-size:13px; color:#cfc9bc; line-height:1.9; margin-top:24px; max-width:88ch; }
@@ -238,6 +237,9 @@
     padding:34px 5vw; font-size:12px; letter-spacing:.15em; line-height:2;
   }
   footer a{ color:var(--gold); text-decoration:none; }
+  footer .viva-foot{ display:inline-flex; align-items:center; gap:8px; }
+  footer .viva-foot img{ height:18px; width:auto; opacity:.9; }
+  footer .viva-foot:hover img{ opacity:1; }
   .reveal{ opacity:0; transform:translateY(18px); transition:opacity .7s, transform .7s; }
   .reveal.in{ opacity:1; transform:none; }
 </style>
@@ -313,7 +315,7 @@
         <span class="org-name" data-i18n="about.awdpi.name">AWDPI · 亚裔女性国际发展计划</span>
       </a>
       <a class="org" href="https://www.vivalavida.today/" target="_blank" rel="noopener">
-        <span class="org-logo viva">VIVA LA VIDA</span>
+        <span class="org-logo"><img src="images/viva-logo.png" alt="Viva la Vida"></span>
         <span class="org-name" data-i18n="about.viva.name">Viva la Vida</span>
       </a>
     </div>
@@ -330,6 +332,7 @@
 
 <footer>
   © 2026 AWDPI · <a href="https://awdpi.org" target="_blank" rel="noopener">awdpi.org</a><br>
+  <a class="viva-foot" href="https://www.vivalavida.today/" target="_blank" rel="noopener"><img src="images/viva-logo-green.png" alt="Viva la Vida">Viva la Vida · vivalavida.today</a><br>
   <span data-i18n="footer.line">她的故事：在光与影之间 · 线上展 ｜ HER STORY: BETWEEN LIGHT AND SHADOW · ONLINE EDITION</span>
 </footer>
 
