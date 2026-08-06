@@ -219,6 +219,20 @@
   .about .col h4{ font-size:13px; letter-spacing:.3em; color:var(--gold); margin-bottom:12px; }
   .about .col p{ font-size:14px; color:#cfc9bc; }
   @media (max-width:760px){ .about .cols{ grid-template-columns:1fr; } }
+
+  /* ===== 联合呈现 ===== */
+  .copres{ border-top:1px solid rgba(247,241,230,.16); margin-top:52px; padding-top:36px; }
+  .copres-title{ font-size:12px; letter-spacing:.42em; color:var(--gold); margin-bottom:26px; }
+  .copres-logos{ display:flex; gap:56px; flex-wrap:wrap; }
+  .org{ display:flex; flex-direction:column; align-items:center; gap:12px; text-decoration:none; color:var(--paper); max-width:360px; text-align:center; }
+  .org .org-logo{ height:54px; display:flex; align-items:center; justify-content:center; }
+  .org .org-logo img{ height:100%; width:auto; }
+  .org .org-logo.viva{ font-family:Georgia,"Songti SC",serif; font-weight:700; font-size:19px; letter-spacing:.22em; border:1px solid rgba(247,241,230,.4); padding:12px 16px; opacity:.85; }
+  .org .org-name{ font-size:12px; letter-spacing:.08em; opacity:.8; }
+  .org:hover .org-name{ opacity:1; }
+  .org-desc{ font-size:13px; color:#cfc9bc; line-height:1.9; margin-top:24px; max-width:88ch; }
+  .org-desc .link{ color:var(--gold); text-decoration:none; white-space:nowrap; }
+  .org-desc .link:hover{ text-decoration:underline; }
   footer{
     background:#121110; color:#8f897d; text-align:center;
     padding:34px 5vw; font-size:12px; letter-spacing:.15em; line-height:2;
@@ -291,6 +305,22 @@
   <div class="kicker" data-i18n="about.kicker">About · 关于</div>
   <h2 data-i18n="about.h2">关于线上展<span class="en">About the Online Edition</span></h2>
   <p class="lead" data-i18n="about.lead">《她的故事：在光与影之间》依托图像、声音两大媒介搭建多层叙事场域。本线上展呈现 16 位拥有多元文化、跨国成长背景的亚裔女性——她们来自科技、学术、金融、医疗、时尚、写作等多个行业。</p>
+  <div class="copres">
+    <div class="copres-title" data-i18n="about.copres.title">联合呈现 · CO-PRESENTED BY</div>
+    <div class="copres-logos">
+      <a class="org" href="https://awdpi.org" target="_blank" rel="noopener">
+        <span class="org-logo"><img src="images/awdpi-logo.png" alt="AWDPI"></span>
+        <span class="org-name" data-i18n="about.awdpi.name">AWDPI · 亚裔女性国际发展计划</span>
+      </a>
+      <a class="org" href="https://www.vivalavida.today/" target="_blank" rel="noopener">
+        <span class="org-logo viva">VIVA LA VIDA</span>
+        <span class="org-name" data-i18n="about.viva.name">Viva la Vida</span>
+      </a>
+    </div>
+    <p class="org-desc" data-i18n="about.awdpi.desc"></p>
+    <p class="org-desc" data-i18n="about.viva.desc"></p>
+  </div>
+
   <div class="cols">
     <div class="col"><h4 data-i18n="about.col1.h">主办 · CURATED BY</h4><p data-i18n="about.col1.p">AWDPI 亚裔女性国际发展计划<br>Asian Women's Development Programme International</p></div>
     <div class="col"><h4 data-i18n="about.col2.h">呈现 · PRESENTED AT</h4><p data-i18n="about.col2.p">2026 Chinese Culture Week<br>8 月 16 日 · 艺术剧场女性力量对谈</p></div>
@@ -387,6 +417,11 @@ const I18N = {
     "about.col1.h":"主办 · CURATED BY","about.col1.p":"AWDPI 亚裔女性国际发展计划<br>Asian Women's Development Programme International",
     "about.col2.h":"呈现 · PRESENTED AT","about.col2.p":"2026 Chinese Culture Week<br>8 月 16 日 · 艺术剧场女性力量对谈",
     "about.col3.h":"形式 · FORMAT","about.col3.p":"肖像摄影 · 第一人称声音档案<br>线上展 · Online Exhibition",
+    "about.copres.title":"联合呈现 · CO-PRESENTED BY",
+    "about.awdpi.name":"AWDPI · 亚裔女性国际发展计划",
+    "about.awdpi.desc":'AWDPI 是一家国际公益组织，致力于消除针对海外亚裔女性的歧视与性别暴力、促进其赋能与发展，由 2020 年成立的 Avoice（海外华人女性保护项目）发展而来。在本项目中，AWDPI 负责线下展览的策划与执行，以及 16 位参与者的肖像摄影与声音档案采集。<a class="link" href="https://awdpi.org" target="_blank" rel="noopener">访问官网 →</a>',
+    "about.viva.name":"Viva la Vida",
+    "about.viva.desc":'Viva la Vida 是以"探索生命意义"为主题的全球艺术项目，源自 2018 年墨西哥的街头艺术实验，通过"什么是你的生命"与"我们仍有艺术"两大国际项目汇聚 60 多个国家的创作者，并拥有全球最大的生命画像数据库。在本项目中，Viva la Vida 负责线上展览的搭建与运营，并策划"生命画像互动征集"等社区参与板块。<a class="link" href="https://www.vivalavida.today/" target="_blank" rel="noopener">访问官网 →</a>',
     "footer.line":"她的故事：在光与影之间 · 线上展 ｜ HER STORY: BETWEEN LIGHT AND SHADOW · ONLINE EDITION",
     "modal.title":"她的故事 · Her Story",
     "modal.pno":"采访者 {n}",
@@ -421,6 +456,11 @@ const I18N = {
     "about.col1.h":"Curated by","about.col1.p":"Asian Women's Development Programme International<br>AWDPI 亚裔女性国际发展计划",
     "about.col2.h":"Presented at","about.col2.p":"2026 Chinese Culture Week<br>Aug 16 · Women in Art Industry Talk",
     "about.col3.h":"Format","about.col3.p":"Portrait Photography · First-person Audio<br>Online Exhibition",
+    "about.copres.title":"CO-PRESENTED BY · 联合呈现",
+    "about.awdpi.name":"AWDPI · Asian Women's Development Programme International",
+    "about.awdpi.desc":'AWDPI is an international public-interest organization working to end discrimination and gender-based violence against Asian women abroad and to empower them. It grew out of Avoice (Protection of Chinese Overseas Women), founded in 2020. In this project AWDPI curates the physical exhibition and produces the portraits and first-person audio of the 16 participants. <a class="link" href="https://awdpi.org" target="_blank" rel="noopener">Official site →</a>',
+    "about.viva.name":"Viva la Vida",
+    "about.viva.desc":'Viva la Vida is a global art project exploring the meaning of life, born from a 2018 street art experiment in Mexico. Through "What is Your Life" and "We Still Have Art" it unites creators from more than 60 countries and holds the largest life-portrait database in the world. In this project Viva la Vida builds and operates the online exhibition and curates community participation such as the Life Portrait collection. <a class="link" href="https://www.vivalavida.today/" target="_blank" rel="noopener">Official site →</a>',
     "footer.line":"HER STORY: BETWEEN LIGHT AND SHADOW · ONLINE EDITION ｜ 她的故事：在光与影之间 · 线上展",
     "modal.title":"Her Story",
     "modal.pno":"Interviewee {n}",
