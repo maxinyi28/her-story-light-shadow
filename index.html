@@ -167,6 +167,27 @@
   .card.tba .mask .m1{ font-size:13px; letter-spacing:.25em; }
   .card.tba .mask .m2{ font-size:10px; letter-spacing:.2em; margin-top:8px; opacity:.7; }
 
+  /* ===== 生命画像征集 ===== */
+  .invite{ background:#fff; border-top:1px solid var(--line); }
+  .invite-actions{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin-top:38px; }
+  .invite-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--ink); color:var(--paper);
+    padding:15px 32px; border-radius:2px; font-size:14px; letter-spacing:.16em;
+    text-decoration:none; transition:opacity .3s, transform .3s;
+  }
+  .invite-btn:hover{ opacity:.85; transform:translateY(-1px); }
+  .invite-note{ font-size:12px; letter-spacing:.12em; opacity:.6; }
+  .invite-wall{ margin-top:64px; border-top:1px solid var(--line); padding-top:28px; }
+  .invite-head{ font-size:12px; letter-spacing:.45em; color:var(--gold); text-transform:uppercase; margin-bottom:22px; }
+  .wall-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:18px; }
+  .slot{
+    aspect-ratio:3/4; border:1px dashed rgba(27,26,24,.26); border-radius:4px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;
+    color:#8a857b; font-size:12px; letter-spacing:.14em; text-align:center; line-height:1.6;
+  }
+  .slot .plus{ font-size:28px; line-height:1; opacity:.55; }
+
   /* ===== 聆听弹层 ===== */
   .overlay{
     position:fixed; inset:0; z-index:100; display:none;
@@ -251,6 +272,7 @@
   <span class="right">
     <a href="#concept" data-i18n="nav.concept">概念</a>
     <a href="#works" data-i18n="nav.works">作品</a>
+    <a href="#invite" data-i18n="nav.invite">生命画像</a>
     <a href="#about" data-i18n="nav.about">关于</a>
     <button class="lang-btn" id="langBtn" aria-label="切换语言">EN</button>
   </span>
@@ -300,6 +322,28 @@
   <h2 data-i18n="works.h2">十六位女性，十六段声音<span class="en">16 Women · 16 Voices</span></h2>
   <p class="lead" data-i18n="works.lead">点击任意肖像，聆听她自己的故事。目前为原型版本，肖像与音频素材将陆续接入。</p>
   <div class="grid" id="grid"></div>
+</section>
+
+<!-- ===== 生命画像征集 ===== -->
+<section class="invite" id="invite">
+  <div class="kicker" data-i18n="invite.kicker">Life Portrait · 生命画像征集</div>
+  <h2 data-i18n="invite.h2">你的生命是什么？<span class="en">What Is Your Life?</span></h2>
+  <p class="lead" data-i18n="invite.lead">以绘画、书写或摄影的方式，回答"你的生命是什么"——这是 Viva la Vida 的全球核心项目。你的作品将汇聚成线上生命画像墙，与全世界分享。</p>
+  <div class="invite-actions">
+    <!-- TODO: 表单链接确定后，把 href="#" 换成征集表单地址（腾讯问卷 / Google Forms / Viva 官方入口），并删除下面的"筹备中"文案 -->
+    <a class="invite-btn" href="#" rel="noopener" data-i18n="invite.cta">提交我的生命画像 →</a>
+    <span class="invite-note" data-i18n="invite.note">提交入口筹备中 · Coming soon</span>
+  </div>
+  <div class="invite-wall">
+    <div class="invite-head" data-i18n="invite.wallTitle">生命画像墙 · LIFE PORTRAIT WALL</div>
+    <div class="wall-grid">
+      <div class="slot"><span class="plus">+</span><span data-i18n="invite.slot">你的生命画像<br>YOUR PORTRAIT</span></div>
+      <div class="slot"><span class="plus">+</span><span data-i18n="invite.slot">你的生命画像<br>YOUR PORTRAIT</span></div>
+      <div class="slot"><span class="plus">+</span><span data-i18n="invite.slot">你的生命画像<br>YOUR PORTRAIT</span></div>
+      <div class="slot"><span class="plus">+</span><span data-i18n="invite.slot">你的生命画像<br>YOUR PORTRAIT</span></div>
+      <div class="slot"><span class="plus">+</span><span data-i18n="invite.slot">你的生命画像<br>YOUR PORTRAIT</span></div>
+    </div>
+  </div>
 </section>
 
 <!-- ===== 关于 ===== -->
@@ -414,6 +458,14 @@ const I18N = {
     "works.h2":'十六位女性，十六段声音<span class="en">16 Women · 16 Voices</span>',
     "works.lead":"点击任意肖像，聆听她自己的故事。目前为原型版本，肖像与音频素材将陆续接入。",
     "works.listen":"聆听 · LISTEN",
+    "nav.invite":"生命画像",
+    "invite.kicker":"Life Portrait · 生命画像征集",
+    "invite.h2":'你的生命是什么？<span class="en">What Is Your Life?</span>',
+    "invite.lead":'以绘画、书写或摄影的方式，回答"你的生命是什么"——这是 Viva la Vida 的全球核心项目。你的作品将汇聚成线上生命画像墙，与全世界分享。',
+    "invite.cta":"提交我的生命画像 →",
+    "invite.note":"提交入口筹备中 · Coming soon",
+    "invite.wallTitle":"生命画像墙 · LIFE PORTRAIT WALL",
+    "invite.slot":"你的生命画像<br>YOUR PORTRAIT",
     "about.kicker":"About · 关于",
     "about.h2":'关于线上展<span class="en">About the Online Edition</span>',
     "about.lead":"《她的故事：在光与影之间》依托图像、声音两大媒介搭建多层叙事场域。本线上展呈现 16 位拥有多元文化、跨国成长背景的亚裔女性——她们来自科技、学术、金融、医疗、时尚、写作等多个行业。",
@@ -453,6 +505,14 @@ const I18N = {
     "works.h2":'16 Women · 16 Voices<span class="en">十六位女性，十六段声音</span>',
     "works.lead":"Click any portrait to hear her own story. This is a prototype — portraits and audio are being added.",
     "works.listen":"LISTEN",
+    "nav.invite":"Life Portrait",
+    "invite.kicker":"Life Portrait Collection",
+    "invite.h2":'What Is Your Life?<span class="en">你的生命是什么？</span>',
+    "invite.lead":'Answer "What is your life?" through drawing, writing, or photography — the global core project of Viva la Vida. Your portrait will join an online Life Portrait Wall, shared with the world.',
+    "invite.cta":"Submit My Life Portrait →",
+    "invite.note":"Submission form coming soon",
+    "invite.wallTitle":"LIFE PORTRAIT WALL · 生命画像墙",
+    "invite.slot":"YOUR PORTRAIT<br>你的生命画像",
     "about.kicker":"About",
     "about.h2":'About the Online Edition<span class="en">关于线上展</span>',
     "about.lead":'"Her Story: Between Light and Shadow" builds a multi-layered narrative field across image and sound. This online edition presents 16 Asian women with multicultural, cross-border backgrounds — from tech, academia, finance, healthcare, fashion, and writing.',
