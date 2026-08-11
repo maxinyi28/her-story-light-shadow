@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>她的故事：在光与影之间 · Her Story: Between Light and Shadow</title>
+<style>
+  :root{
+    --paper:  #f7f1e6;   /* 光 · 纸白 */
+    --ink:    #1b1a18;   /* 影 · 墨色 */
+    --gold:   #b39a5f;   /* 光 · 金色点缀 */
+    --grey:   #8a857a;   /* 次级文字 */
+    --line:   rgba(27,26,24,.14);
+    --shadow: 0 14px 40px rgba(27,26,24,.14);
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,serif;
+    color:var(--ink); background:var(--paper); line-height:1.7;
+  }
+  ::selection{ background:var(--gold); color:#fff; }
+
+  /* ===== 顶部导航 ===== */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 5vw; mix-blend-mode:difference; color:#fff;
+    font-size:13px; letter-spacing:.18em;
+  }
+  nav .brand{ font-weight:600; }
+  nav .right{ display:flex; align-items:center; gap:22px; }
+  nav a{ color:inherit; text-decoration:none; opacity:.75; }
+  nav a:hover{ opacity:1; }
+  .lang-btn{
+    background:none; border:1px solid currentColor; color:inherit;
+    font:inherit; letter-spacing:.15em; padding:5px 13px; border-radius:2px;
+    cursor:pointer; opacity:.9; transition:opacity .2s;
+  }
+  .lang-btn:hover{ opacity:1; }
+
+  /* ===== Hero：光 / 影 左右分屏（带渐变） ===== */
+  .hero{
+    display:grid; grid-template-columns:1fr 1fr; min-height:100vh;
+  }
+  .hero .light, .hero .shadow{
+    display:flex; flex-direction:column; justify-content:center;
+    padding:18vh 6vw 10vh; position:relative; overflow:hidden;
+  }
+  .hero .light{
+    background:linear-gradient(180deg, #fcf8ef 0%, var(--paper) 55%, #efe2c8 100%);
+    color:var(--ink);
+  }
+  .hero .shadow{
+    background:linear-gradient(180deg, #26231f 0%, var(--ink) 55%, #121110 100%);
+    color:var(--paper);
+  }
+  .hero .tag{
+    font-size:12px; letter-spacing:.4em; opacity:.55; margin-bottom:26px;
+  }
+  .hero h1{
+    font-size:clamp(40px, 7vw, 96px); font-weight:700; line-height:1.06;
+    letter-spacing:.06em; font-family:Georgia,"Songti SC","SimSun",serif;
+  }
+  .hero h1 .en{
+    display:block; font-size:clamp(16px,2vw,24px); font-weight:400;
+    letter-spacing:.22em; margin-top:20px; opacity:.7;
+    font-family:"PingFang SC","Hiragino Sans GB",sans-serif;
+  }
+  .hero .divider{
+    position:absolute; top:0; bottom:0; left:50%; width:1px;
+    background:linear-gradient(180deg, transparent, var(--gold), transparent);
+  }
+  .hero .sub{
+    margin-top:34px; font-size:15px; opacity:.75; max-width:34ch;
+  }
+  .hero .seam-note{
+    position:absolute; bottom:34px; width:100%; left:0; text-align:center;
+    font-size:12px; letter-spacing:.35em; opacity:.5;
+  }
+  @media (max-width:760px){
+    .hero{ grid-template-columns:1fr; min-height:0; }
+    .hero .divider{ display:none; }
+    .hero .light{ padding-top:22vh; }
+  }
+
+  /* ===== 通用节 ===== */
+  section{ padding:90px 6vw; }
+  .kicker{
+    font-size:12px; letter-spacing:.45em; color:var(--gold);
+    text-transform:uppercase; margin-bottom:18px;
+  }
+  h2{
+    font-size:clamp(26px,4vw,42px); font-family:Georgia,"Songti SC",serif;
+    letter-spacing:.04em; margin-bottom:22px;
+  }
+  h2 .en{ font-size:.45em; font-weight:400; letter-spacing:.25em; opacity:.6; margin-top:8px; }
+  .lead{ max-width:64ch; color:#55504a; font-size:16px; }
+
+  /* ===== 概念：光与影 ===== */
+  .concept{ background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .concept .core{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:40px; margin:44px 0 10px;
+  }
+  .pillar{ padding:30px 0; border-top:1px solid var(--line); }
+  .pillar .word{ font-family:Georgia,"Songti SC",serif; font-size:30px; letter-spacing:.2em; }
+  .pillar .cn{ font-size:14px; opacity:.7; margin-top:4px; letter-spacing:.15em; }
+  .pillar p{ font-size:15px; color:#55504a; margin-top:14px; max-width:44ch; }
+  .pillar.light .word{ color:var(--ink); }
+  .pillar.shadow .word{ color:var(--gold); }
+  .quote{
+    font-family:Georgia,"Songti SC",serif; font-size:clamp(20px,3vw,30px);
+    letter-spacing:.06em; margin-top:56px; padding-top:30px;
+    border-top:1px solid var(--line); color:var(--ink);
+  }
+  .quote small{
+    display:block; font-family:"PingFang SC",sans-serif; font-size:13px;
+    letter-spacing:.3em; opacity:.6; margin-top:12px;
+  }
+  @media (max-width:760px){ .concept .core{ grid-template-columns:1fr; } }
+
+  /* ===== 作品画廊 ===== */
+  .works{ background:var(--paper); }
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:22px;
+    margin-top:44px;
+  }
+  .card{
+    position:relative; cursor:pointer; overflow:hidden; border-radius:4px;
+    background:#000; aspect-ratio:3/4;
+    box-shadow:0 2px 10px rgba(27,26,24,.08);
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+  .card:hover{ transform:translateY(-5px); box-shadow:var(--shadow); }
+  /* 肖像占位：光→影 渐变 */
+  .card .face{
+    position:absolute; inset:0;
+    background:linear-gradient(160deg, #f2e7d0 0%, #d8c8a6 42%, #3a352c 100%);
+    display:flex; align-items:flex-end; padding:18px;
+    transition:filter .35s ease;
+  }
+  .card:hover .face{ filter:brightness(.92); }
+  .card .face.has-photo{ background-size:cover; background-position:center; }
+  .card .face.has-photo::after{ content:""; position:absolute; inset:0; z-index:1; background:linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,.5)); }
+  .card .face.has-photo .num{ mix-blend-mode:normal; z-index:2; text-shadow:0 1px 6px rgba(0,0,0,.6); }
+  .card .num{
+    position:absolute; top:14px; left:16px; font-size:13px; letter-spacing:.25em; color:#fff;
+    mix-blend-mode:difference; opacity:.85;
+  }
+  .card .meta{ position:relative; z-index:2; color:#fff; text-shadow:0 1px 8px rgba(0,0,0,.4); }
+  .card .role{ font-size:15px; font-weight:600; letter-spacing:.05em; }
+  .card .role-en{ font-size:11px; opacity:.75; margin-top:2px; letter-spacing:.08em; }
+  .card .listen{
+    position:absolute; right:14px; bottom:14px; z-index:3;
+    display:flex; align-items:center; gap:7px;
+    font-size:11px; letter-spacing:.15em; color:#fff; opacity:0;
+    transform:translateY(6px); transition:opacity .3s, transform .3s;
+  }
+  .card:hover .listen{ opacity:1; transform:none; }
+  .card .listen .dot{
+    width:22px; height:22px; border-radius:50%; background:var(--gold);
+    display:flex; align-items:center; justify-content:center; font-size:10px; color:#fff;
+  }
+  /* 占位卡（待揭晓） */
+  .card.tba .face{
+    background:repeating-linear-gradient(45deg, #efe6d4 0 12px, #e6dcc6 12px 24px);
+    align-items:center; justify-content:center; padding:0;
+  }
+  .card.tba .mask{ text-align:center; color:#7a746a; }
+  .card.tba .mask .m1{ font-size:13px; letter-spacing:.25em; }
+  .card.tba .mask .m2{ font-size:10px; letter-spacing:.2em; margin-top:8px; opacity:.7; }
+
+  /* ===== 生命画像征集 ===== */
+  .invite{ background:#fff; border-top:1px solid var(--line); }
+  .invite-actions{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin-top:38px; }
+  .invite-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--ink); color:var(--paper);
+    padding:15px 32px; border-radius:2px; font-size:14px; letter-spacing:.16em;
+    text-decoration:none; transition:opacity .3s, transform .3s;
+  }
+  .invite-btn:hover{ opacity:.85; transform:translateY(-1px); }
+  .invite-wall{ margin-top:64px; border-top:1px solid var(--line); padding-top:28px; }
+  .invite-head{ font-size:12px; letter-spacing:.45em; color:var(--gold); text-transform:uppercase; margin-bottom:22px; }
+  .wall-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:18px; }
+  .slot{
+    aspect-ratio:3/4; border:1px dashed rgba(27,26,24,.26); border-radius:4px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;
+    color:#8a857b; font-size:12px; letter-spacing:.14em; text-align:center; line-height:1.6;
+  }
+  .slot .plus{ font-size:28px; line-height:1; opacity:.55; }
+  .invite-preview{ margin-top:48px; }
+  .canva-embed{
+    position:relative; width:100%; max-width:520px; margin:0 auto; height:0; padding-top:100%;
+    overflow:hidden; border-radius:10px; background:#f3efe6;
+    box-shadow:0 6px 24px rgba(0,0,0,.08);
+  }
+  .canva-embed iframe{ position:absolute; top:0; left:0; width:100%; height:100%; border:0; }
+  .invite-open{
+    display:inline-block; margin-top:14px;
+    font-size:12px; letter-spacing:.12em; color:var(--gold);
+    text-decoration:underline; text-underline-offset:3px;
+  }
+
+  /* ===== 生命画像悬浮窗（新窗口打开 Canva） ===== */
+  .float-btn{
+    position:fixed; right:24px; bottom:24px; z-index:90;
+    display:flex; align-items:center; gap:9px;
+    background:var(--gold); color:#fff; text-decoration:none;
+    border-radius:999px; padding:13px 22px;
+    font-size:13px; letter-spacing:.14em;
+    box-shadow:0 6px 22px rgba(0,0,0,.28);
+    transition:transform .25s ease;
+  }
+  .float-btn:hover{ transform:translateY(-3px); }
+  .float-ico{ font-size:16px; line-height:1; }
+  @media (max-width:760px){ .float-btn{ right:16px; bottom:16px; padding:11px 17px; } }
+
+  /* ===== 聆听弹层 ===== */
+  .overlay{
+    position:fixed; inset:0; z-index:100; display:none;
+    align-items:center; justify-content:center; padding:5vh 5vw;
+    background:rgba(20,19,17,.78); backdrop-filter:blur(6px);
+  }
+  .overlay.open{ display:flex; }
+  .panel{
+    display:grid; grid-template-columns:300px 1fr; width:min(860px,100%);
+    max-height:86vh; overflow:auto; background:var(--paper); border-radius:6px;
+    box-shadow:0 30px 80px rgba(0,0,0,.5); position:relative;
+  }
+  .panel .cover{
+    background:linear-gradient(160deg,#f2e7d0 0%,#d8c8a6 45%,#3a352c 100%);
+    min-height:320px; position:relative;
+    display:flex; align-items:flex-end; padding:22px;
+  }
+  .panel .cover .cnum{ position:absolute; top:16px; left:20px; font-size:14px; letter-spacing:.3em; color:#fff; mix-blend-mode:difference; }
+  .panel .cover .crole{ color:#fff; text-shadow:0 1px 8px rgba(0,0,0,.4); }
+  .panel .cover.has-photo{ background-size:cover; background-position:center; }
+  .panel .cover.has-photo::after{ content:""; position:absolute; inset:0; z-index:1; background:linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.55) 100%); }
+  .panel .cover.has-photo .cnum{ mix-blend-mode:normal; z-index:2; text-shadow:0 1px 6px rgba(0,0,0,.6); }
+  .panel .cover.has-photo .crole{ position:relative; z-index:2; }
+  .panel .crole b{ display:block; font-size:19px; letter-spacing:.04em; }
+  .panel .crole span{ font-size:12px; opacity:.8; }
+  .panel .body{ padding:38px 40px; }
+  .panel .body .pno{ font-size:12px; letter-spacing:.3em; color:var(--gold); }
+  .panel .body h3{ font-family:Georgia,"Songti SC",serif; font-size:26px; margin:10px 0 16px; }
+  .panel .body p{ color:#55504a; font-size:15px; margin-bottom:26px; }
+  .panel .body .story{ border-top:1px solid #e5dfd2; padding-top:18px; margin-top:2px; }
+  .panel .body .story h4{ font-size:12px; letter-spacing:.28em; color:var(--gold); margin:0 0 12px; }
+  .panel .body .story p{ margin-bottom:0; }
+  .play{
+    display:inline-flex; align-items:center; gap:12px; border:none; cursor:pointer;
+    background:var(--ink); color:var(--paper); font-size:13px; letter-spacing:.2em;
+    padding:14px 24px; border-radius:2px; transition:background .25s, transform .15s;
+  }
+  .play:hover{ background:#000; transform:scale(1.02); }
+  .play.playing .spinner{ animation:spin 1s linear infinite; }
+  .play .note{ display:block; font-size:10px; opacity:.55; letter-spacing:.1em; margin-top:4px; }
+  .close{
+    position:absolute; top:12px; right:16px; z-index:5; border:none; background:none;
+    font-size:26px; color:var(--paper); cursor:pointer; mix-blend-mode:difference; line-height:1;
+  }
+  .close:hover{ opacity:.7; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  @media (max-width:760px){
+    .panel{ grid-template-columns:1fr; }
+    .panel .cover{ min-height:220px; }
+  }
+
+  /* ===== 关于 & 页脚 ===== */
+  .about{ background:var(--ink); color:var(--paper); }
+  .about h2 .en{ color:var(--paper); }
+  .about .lead{ color:#cfc9bc; }
+  .about .cols{ display:grid; grid-template-columns:repeat(3,1fr); gap:36px; margin-top:44px; }
+  .about .col h4{ font-size:13px; letter-spacing:.3em; color:var(--gold); margin-bottom:12px; }
+  .about .col p{ font-size:14px; color:#cfc9bc; }
+  @media (max-width:760px){ .about .cols{ grid-template-columns:1fr; } }
+
+  /* ===== 联合呈现 ===== */
+  .copres{ border-top:1px solid rgba(247,241,230,.16); margin-top:52px; padding-top:36px; }
+  .copres-title{ font-size:12px; letter-spacing:.42em; color:var(--gold); margin-bottom:26px; }
+  .copres-logos{ display:flex; gap:56px; flex-wrap:wrap; }
+  .org{ display:flex; flex-direction:column; align-items:center; gap:12px; text-decoration:none; color:var(--paper); max-width:360px; text-align:center; }
+  .org .org-logo{ height:54px; display:flex; align-items:center; justify-content:center; }
+  .org .org-logo img{ height:100%; width:auto; }
+  .org .org-name{ font-size:12px; letter-spacing:.08em; opacity:.8; }
+  .org:hover .org-name{ opacity:1; }
+  .org-desc{ font-size:13px; color:#cfc9bc; line-height:1.9; margin-top:24px; max-width:88ch; }
+  .org-desc .link{ color:var(--gold); text-decoration:none; white-space:nowrap; }
+  .org-desc .link:hover{ text-decoration:underline; }
+  footer{
+    background:#121110; color:#8f897d; text-align:center;
+    padding:34px 5vw; font-size:12px; letter-spacing:.15em; line-height:2;
+  }
+  footer a{ color:var(--gold); text-decoration:none; }
+  footer .viva-foot{ display:inline-flex; align-items:center; gap:8px; }
+  footer .viva-foot img{ height:18px; width:auto; opacity:.9; }
+  footer .viva-foot:hover img{ opacity:1; }
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .7s, transform .7s; }
+  .reveal.in{ opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="brand" data-i18n="nav.brand">她的故事 · HER STORY</span>
+  <span class="right">
+    <a href="#concept" data-i18n="nav.concept">概念</a>
+    <a href="#works" data-i18n="nav.works">作品</a>
+    <a href="#invite" data-i18n="nav.invite">生命画像</a>
+    <a href="#about" data-i18n="nav.about">关于</a>
+    <button class="lang-btn" id="langBtn" aria-label="切换语言">EN</button>
+  </span>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="light">
+    <div class="tag" data-i18n="hero.light.tag">光 · LIGHT</div>
+    <h1 data-i18n="hero.light.h1">她 的 故 事<span class="en">HER STORY</span></h1>
+    <p class="sub" data-i18n="hero.light.sub">可见性与被识别。<br>被看见、被定义、被观看着的显性人生。</p>
+  </div>
+  <div class="divider"></div>
+  <div class="shadow">
+    <div class="tag" data-i18n="hero.shadow.tag">影 · SHADOW</div>
+    <h1 data-i18n="hero.shadow.h1">在光与影之间<span class="en">BETWEEN LIGHT &amp; SHADOW</span></h1>
+    <p class="sub" data-i18n="hero.shadow.sub">未被言说与被遮蔽的经验。<br>沉默、未知、表象之下的真实。</p>
+  </div>
+  <div class="seam-note" data-i18n="hero.seam">跨媒介叙事艺术展 · 线上展 | ONLINE EDITION</div>
+</header>
+
+<!-- ===== 概念 ===== -->
+<section class="concept" id="concept">
+  <div class="kicker" data-i18n="concept.kicker">Curatorial Concept · 策展概念</div>
+  <h2 data-i18n="concept.h2">可见，但未被充分理解<span class="en">Visible, yet rarely fully understood</span></h2>
+  <p class="lead" data-i18n="concept.lead">在当代语境中，亚裔女性常常处于一种"可见但未被充分理解"的位置——形象被频繁观看，复杂经验却较少进入公共叙事。本展以<b>肖像摄影</b>与<b>第一人称声音</b>的并置建立张力：图像呈现"被观看"的客体状态，声音则构成"自我叙述"的主体觉醒。</p>
+
+  <div class="core">
+    <div class="pillar light">
+      <div class="word" data-i18n="concept.light.word">光</div>
+      <div class="cn" data-i18n="concept.light.cn">LIGHT</div>
+      <p data-i18n="concept.light.p">指向可见性与被识别。代表着那些被看见、被定义的显性经验与表达。</p>
+    </div>
+    <div class="pillar shadow">
+      <div class="word" data-i18n="concept.shadow.word">影</div>
+      <div class="cn" data-i18n="concept.shadow.cn">SHADOW</div>
+      <p data-i18n="concept.shadow.p">指向未被言说与被遮蔽的经验。象征着沉默、未知与潜藏在表象之下的真实。</p>
+    </div>
+  </div>
+
+  <div class="quote reveal" data-i18n="concept.quote">在两者之间建立通道，使观众从"观看"转向"倾听"。<small>To build a passage between the two — from seeing, toward listening.</small></div>
+</section>
+
+<!-- ===== 作品画廊 ===== -->
+<section class="works" id="works">
+  <div class="kicker" data-i18n="works.kicker">Works · 作品</div>
+  <h2 data-i18n="works.h2">十六位女性，十六段声音<span class="en">16 Women · 16 Voices</span></h2>
+  <p class="lead" data-i18n="works.lead">点击任意肖像，聆听她自己的故事。目前为原型版本，肖像与音频素材将陆续接入。</p>
+  <div class="grid" id="grid"></div>
+</section>
+
+<!-- ===== 生命画像征集 ===== -->
+<section class="invite" id="invite">
+  <div class="kicker" data-i18n="invite.kicker">Life Portrait · 生命画像征集</div>
+  <h2 data-i18n="invite.h2">你的生命是什么？<span class="en">What Is Your Life?</span></h2>
+  <p class="lead" data-i18n="invite.lead">以绘画、书写或摄影的方式，回答"你的生命是什么"——这是 Viva la Vida 的全球核心项目。你的作品将汇聚成线上生命画像墙，与全世界分享。</p>
+  <div class="invite-actions">
+    <a class="invite-btn" href="https://www.canva.com/design/DAHRgMVMIk0/ZqnCKEld_mnxDo9AI8dgWw/edit" target="_blank" rel="noopener" data-i18n="invite.cta">提交我的生命画像 →</a>
+  </div>
+  <div class="invite-preview">
+    <div class="invite-head" data-i18n="invite.previewTitle">在线查看征集设计 · VIEW THE COLLECTION</div>
+    <div class="canva-embed">
+      <iframe loading="lazy" src="https://www.canva.com/design/DAHRgMVMIk0/EgyCP-Hx2J5m1E_OWRovag/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen"></iframe>
+    </div>
+    <a class="invite-open" href="https://www.canva.com/design/DAHRgMVMIk0/EgyCP-Hx2J5m1E_OWRovag/view" target="_blank" rel="noopener" data-i18n="invite.openFull">在新窗口打开 ↗</a>
+  </div>
+  <div class="invite-wall">
+    <div class="invite-head" data-i18n="invite.wallTitle">生命画像墙 · LIFE PORTRAIT WALL</div>
+    <div class="wall-grid">
+      <div class="slot"><span class="plus">+</span><span data-i18n="invite.slot">你的生命画像<br>YOUR PORTRAIT</span></div>
+      <div class="slot"><span class="plus">+</span><span data-i18n="invite.slot">你的生命画像<br>YOUR PORTRAIT</span></div>
+      <div class="slot"><span class="plus">+</span><span data-i18n="invite.slot">你的生命画像<br>YOUR PORTRAIT</span></div>
+      <div class="slot"><span class="plus">+</span><span data-i18n="invite.slot">你的生命画像<br>YOUR PORTRAIT</span></div>
+      <div class="slot"><span class="plus">+</span><span data-i18n="invite.slot">你的生命画像<br>YOUR PORTRAIT</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 关于 ===== -->
+<section class="about" id="about">
+  <div class="kicker" data-i18n="about.kicker">About · 关于</div>
+  <h2 data-i18n="about.h2">关于线上展<span class="en">About the Online Edition</span></h2>
+  <p class="lead" data-i18n="about.lead">《她的故事：在光与影之间》依托图像、声音两大媒介搭建多层叙事场域。本线上展呈现 16 位拥有多元文化、跨国成长背景的亚裔女性——她们来自科技、学术、金融、医疗、时尚、写作等多个行业。</p>
+  <div class="copres">
+    <div class="copres-title" data-i18n="about.copres.title">联合呈现 · CO-PRESENTED BY</div>
+    <div class="copres-logos">
+      <a class="org" href="https://awdpi.org" target="_blank" rel="noopener">
+        <span class="org-logo"><img src="images/awdpi-logo.png" alt="AWDPI"></span>
+        <span class="org-name" data-i18n="about.awdpi.name">AWDPI · 亚裔女性国际发展计划</span>
+      </a>
+      <a class="org" href="https://www.vivalavida.today/" target="_blank" rel="noopener">
+        <span class="org-logo"><img src="images/viva-logo.png" alt="Viva la Vida"></span>
+        <span class="org-name" data-i18n="about.viva.name">Viva la Vida</span>
+      </a>
+    </div>
+    <p class="org-desc" data-i18n="about.awdpi.desc"></p>
+    <p class="org-desc" data-i18n="about.viva.desc"></p>
+  </div>
+
+  <div class="cols">
+    <div class="col"><h4 data-i18n="about.col1.h">主办 · CURATED BY</h4><p data-i18n="about.col1.p">AWDPI 亚裔女性国际发展计划<br>Asian Women's Development Programme International</p></div>
+    <div class="col"><h4 data-i18n="about.col2.h">呈现 · PRESENTED AT</h4><p data-i18n="about.col2.p">2026 Chinese Culture Week<br>8 月 16 日 · 艺术剧场女性力量对谈</p></div>
+    <div class="col"><h4 data-i18n="about.col3.h">形式 · FORMAT</h4><p data-i18n="about.col3.p">肖像摄影 · 第一人称声音档案<br>线上展 · Online Exhibition</p></div>
+  </div>
+</section>
+
+<footer>
+  © 2026 AWDPI · <a href="https://awdpi.org" target="_blank" rel="noopener">awdpi.org</a><br>
+  <a class="viva-foot" href="https://www.vivalavida.today/" target="_blank" rel="noopener"><img src="images/viva-logo-green.png" alt="Viva la Vida">Viva la Vida · vivalavida.today</a><br>
+  <span data-i18n="footer.line">她的故事：在光与影之间 · 线上展 ｜ HER STORY: BETWEEN LIGHT AND SHADOW · ONLINE EDITION</span>
+</footer>
+
+<!-- ===== 聆听弹层 ===== -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="panel">
+    <button class="close" id="closeBtn" aria-label="关闭">×</button>
+    <div class="cover" id="oCover">
+      <span class="cnum" id="oNum">01</span>
+      <div class="crole"><b id="oRole">标题</b><span id="oRoleEn">Subtitle</span></div>
+    </div>
+    <div class="body">
+      <div class="pno" id="oPno">采访者 01</div>
+      <h3 id="oTitle">她的故事</h3>
+      <p id="oBio">故事内容……</p>
+      <div class="story" id="oStoryWrap" hidden>
+        <h4 id="oStoryTitle">采访故事</h4>
+        <p id="oStory"></p>
+      </div>
+      <button class="play" id="playBtn"><span class="spinner">▶</span><span id="playLabel">播放声音档案 / Play Audio</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 生命画像悬浮窗（新窗口打开 Canva） ===== -->
+<a class="float-btn" href="https://www.canva.com/design/DAHRgMVMIk0/ZqnCKEld_mnxDo9AI8dgWw/edit" target="_blank" rel="noopener" aria-label="生命画像">
+  <span class="float-ico">✎</span>
+  <span class="float-txt" data-i18n="float.label">生命画像</span>
+</a>
+
+<script>
+/* =========================================================
+   作品数据 —— 后续替换：填入真实姓名 / 肖像 / 音频链接即可
+   每条：num 编号 · role 职业 · roleEn 英文职业 · bio 简介 · bioEn 英文简介 · audio 音频URL（留空=待接入）
+   ========================================================= */
+const STORIES = [
+  {num:"01", role:"科技与医疗领域创业者", roleEn:"Founder · AI for Healthcare & Education",
+   bio:"赵景月女士是一位拥有深厚科研背景并成功转型为企业家的华人女性。她本科保送至山东大学微生物系，后于中国科学院上海生化细胞所攻读结构生物学硕士，参与国家级重大科研项目，并发表多篇论文。随后，她前往英国深造，先后在伦敦大学国王学院和帝国理工学院从事科研工作，完成博士后项目。2013年起，赵女士转向生物医药领域咨询行业，在国际知名公司任职十年后，创办了自己的AI科技公司，专注于将人工智能技术应用于医疗和教育等多个领域。她曾在英国推动少儿编程教育项目，致力于在科技创新中融入教育平等的理念。作为一位在英国生活、学习、创业并育有两个孩子的母亲，她深切理解女性在跨文化背景下平衡事业与家庭的挑战。她的经历体现出坚韧、智慧与成长，也激励着更多在海外奋斗的华人女性。",
+   bioEn:"Ms Jingyue Zhao is a Chinese entrepreneur with an extensive scientific research background. She was admitted to the Department of Microbiology at Shandong University through a highly competitive recommendation-based scheme. She later pursued a master's degree in structural biology at the Shanghai Institute of Biochemistry and Cell Biology, Chinese Academy of Sciences, where she contributed to major national research projects and published several academic papers. She subsequently moved to the United Kingdom, conducting research at King's College London and Imperial College London and completing her postdoctoral training. In 2013, Ms Zhao transitioned into consulting in the biopharmaceutical sector. After a decade at internationally renowned firms, she founded her own AI technology company, which focuses on applying artificial intelligence across healthcare, education and other fields. She has also championed coding education programmes for children in the UK, seeking to embed the principle of educational equality within technological innovation. As a mother of two who has lived, studied and built a business in the UK, she has a profound understanding of the challenges women face in balancing career and family across cultures. Her journey embodies resilience, wisdom and personal growth, inspiring more Chinese women to pursue their aspirations and thrive overseas.", face:"images/story/01.jpg", photo:"images/story/01b.jpg"},
+  {num:"02", role:"并购咨询 · 多元包容倡导者", roleEn:"Deals Professional · DEI Advocate",
+   bio:"Alice Huang 目前任职于 PwC UK Deals Financial Sponsor Coverage & Origination 团队，主要通过连接商业机会、人才与创新想法，推动 PwC Deals 业务的增长与跨团队协作。她在 PwC 已拥有超过六年的工作经验，并具备媒体机构及专业服务行业背景，擅长从全公司视角识别业务机会、构建商业叙事并协调高级利益相关者。她的工作处于故事表达、数据与科技的交汇点，致力于将复杂信息转化为清晰、可执行的战略，以支持业务拓展与交易决策。她曾参与销售管线表现优化、ESG 及 GenAI 增长项目，并通过 Salesforce、DealCloud 等平台提升治理、协作效率及业务拓展的可规模化能力。除本职工作外，Alice 长期关注多元、公平与包容，以及健康不平等议题。她目前担任 Diversity UK Trustee，并积极参与包括提升干细胞捐赠者多样性、神经多样性赋能以及缩小职场性别健康差距在内的多项倡议。作为 TEDx Square Mile Women 2025 的组织者，她推动 Wellbeing of Women 与 PwC Gender Balance Network 建立合作，并共同策划国际妇女节主题活动，为代表性不足的女性群体提供表达与被看见的平台。她也持续关注“隐形女性”的经历，希望让更多女性的声音、故事与现实挑战得到关注与回应。在学术方面，Alice 目前正在帝国理工学院攻读 Healthcare and Design 硕士学位，重点探索如何通过创新应用来改善健康不平等问题。她本科毕业于哈尔滨工业大学会计学专业。她在职场真实性、多元包容与社会影响方面的投入，也曾获得 Chinese Women of the Year 以及 Be You at PwC 等荣誉认可。",
+   bioEn:"Alice Huang works in PwC UK's Deals Financial Sponsor Coverage & Origination team, where she drives growth by connecting opportunities, people and innovative ideas across the firm's Deals teams. With over six years of experience at PwC, alongside previous experience in media agencies and professional services, she brings a firmwide perspective and strong cross-sector network to identifying opportunities, shaping commercial narratives and mobilising senior stakeholders. Her work sits at the intersection of storytelling, data and technology, translating complex insights into actionable strategies that support origination and deal-making. From improving pipeline performance to supporting ESG and GenAI growth initiatives, she leverages platforms including Salesforce and DealCloud to strengthen governance, collaboration, efficiency and scalability in fast-moving, high-profile environments. Beyond her core role, Alice is passionate about diversity, inclusion and health equity. She serves as a Trustee at Diversity UK and has championed initiatives including diversifying the stem cell registry, neurodiversity empowerment and addressing the gender health gap in the workplace. As an organiser of TEDx Square Mile Women 2025, she established a collaboration between Wellbeing of Women and PwC's Gender Balance Network to curate an International Women's Day event amplifying underrepresented voices, and she continues to create platforms that ensure the stories and challenges of often-invisible women are heard and addressed. Alice is also currently pursuing a Master's degree in Healthcare and Design at Imperial College London, exploring how innovation adoption can help address health inequalities. She holds a Bachelor's degree in Accounting from Harbin Institute of Technology, China, and her commitment to workplace authenticity and social impact has been recognised through the Chinese Women of the Year and Be You at PwC awards.", face:"images/story/02.jpg", photo:"images/story/02b.jpg"},
+  {num:"03", role:"管理咨询 · 创业探索者", roleEn:"Consultant Turned Founder",
+   bio:"Lulu是一位现居伦敦的青年女性，从事管理咨询工作，毕业于英国诺丁汉大学与帝国理工学院。她在信息系统安全与科技风险领域拥有四年从业经验，曾深度参与企业数字化与风险管理相关项目，在高度理性与结构化的职业环境中不断打磨专业能力与判断力。然而，在稳定的职业路径之外，她也逐渐开始反思既有的成功叙事。随着对自我兴趣与内在驱动力的深入探索，她意识到自己对不确定性、创造性与自主性有着更强烈的追求。自2024年起，她主动走出传统职业轨道，开启创业尝试，进入一个更加开放与多元的探索阶段。在这一过程中，她对女性在职场与社会中的位置有了更加切身而深刻的观察。她注意到，尽管女性在专业领域中的参与度不断提升，但在话语权、资源分配与结构性机会方面，仍然存在隐性的壁垒。同时，女性往往需要在职业发展与家庭责任之间进行复杂而持续的平衡，这种多重角色的叠加，使“自我实现”成为一项更具挑战的命题。基于这些经验与思考，Lulu将“女性力量”理解为一种并非外显张扬、却内在稳定而持续的能力——它体现在面对不确定性时的选择勇气，也体现在长期坚持中的自我确认。这种力量既来自个体的自我建构，也来自对社会结构的清醒认知。她希望通过记录自身从咨询行业走向创业探索的转变过程，呈现一位当代女性在现实结构与个人理想之间不断协商与前行的轨迹。同时，她也期待通过自身的表达与行动，鼓励更多年轻女性打破既定路径的限制，在不确定中寻找方向，在尝试中构建属于自己的生活与价值体系。",
+   bioEn:"Lulu is a young professional based in London who works in management consulting. She graduated from the University of Nottingham and Imperial College London. With four years of experience in information systems security and technology risk, she has worked extensively on corporate digital transformation and risk management projects, continually refining her professional expertise and judgement within a highly rational and structured working environment. Beyond this stable career path, however, she gradually began to question conventional narratives of success. As she explored her interests and inner motivations more deeply, she realised that she felt a stronger pull towards uncertainty, creativity, and autonomy. In 2024, she made the conscious decision to step beyond the traditional career track and embark on an entrepreneurial journey, entering a more open and diverse phase of exploration. Through this process, she has developed a more personal and profound understanding of women's position in the workplace and society. She has observed that although women's participation in professional fields continues to increase, subtle barriers remain in terms of decision-making power, access to resources, and structural opportunities. At the same time, women are often expected to navigate a complex and continuous balance between career development and family responsibilities. The accumulation of these multiple roles makes self-actualisation an even more challenging pursuit. Drawing on these experiences and reflections, Lulu understands “women's strength” not as something outwardly assertive or conspicuous, but as a quiet, steady, and enduring inner capacity. It is reflected in the courage to make choices in the face of uncertainty, as well as in the self-belief sustained through long-term perseverance. This strength arises both from the individual process of shaping one's identity and from a clear-eyed awareness of the social structures within which that process takes place. By documenting her transition from consulting to entrepreneurial exploration, Lulu hopes to capture the journey of a contemporary woman continually negotiating between structural realities and personal aspirations. Through her words and actions, she also hopes to encourage more young women to move beyond the limitations of predetermined paths—to seek direction amid uncertainty and, through experimentation, build lives and systems of value that are truly their own.", face:"images/story/03.jpg", photo:"images/story/03b.jpg"},
+  {num:"04", role:"会计与金融学者", roleEn:"Senior Lecturer in Accounting & Finance",
+   bio:"李博士（Dr Claire Li）现任英国伦敦罗汉普顿大学（University of Roehampton London）会计与金融高级讲师，并担任商学院及法学院就业与职业发展负责人（School Career Lead）。她的研究聚焦于数字化会计与金融、人工智能治理、公司治理、公共会计与责任，以及财务素养与规划，致力于探索数字时代如何实现更加透明、负责任和可持续的组织治理。进入学术界之前，李博士曾任职于香港普华永道（PwC Hong Kong）及香港上市公司王朝酒业集团（Dynasty Fine Wines Group），拥有丰富的国际金融与企业实践经验。她曾在英国爱丁堡赫瑞·瓦特大学（Heriot-Watt University, Edinburgh）及英国伦敦皇家霍洛威大学（Royal Holloway, University of London）任教，并积极参与国际学术合作。她的研究成果发表于 Review of Quantitative Finance and Accounting、Technological Forecasting and Social Change、Resources Policy 等国际学术期刊，并获得英国会计与金融协会（BAFA）研究资助。她同时关注学术研究如何服务社会，曾参与地方政府及中小企业合作项目，推动知识转化、创新发展与社会影响。李博士相信，教育、研究与艺术都拥有连接不同文化、不同世代的力量，而每个人的生命故事，都值得被认真倾听。",
+   bioEn:"Dr Claire Li is a Senior Lecturer in Accounting and Finance at the University of Roehampton London, where she also serves as School Career Lead for the Business and Law School. Her research focuses on digital accounting and finance, AI governance, corporate governance, public accountability, and financial literacy, exploring how organisations can build more transparent, responsible, and sustainable governance in the digital age. Before entering academia, Dr Li worked as an auditor at PwC Hong Kong and later held a finance role at the Hong Kong-listed company Dynasty Fine Wines Group. She has also taught at Heriot-Watt University and Royal Holloway, University of London. Her research has been published in internationally recognised journals including Review of Quantitative Finance and Accounting, Technological Forecasting and Social Change, and Resources Policy. She has received research funding from the British Accounting and Finance Association (BAFA) and has collaborated with local government and SMEs on knowledge exchange and community development projects. Dr Li believes that education, research and the arts all have the power to connect people across cultures and generations, and that every life story deserves to be heard.", face:"images/story/04.jpg", photo:"images/story/04b.jpg",
+   story:"", storyEn:"Claire began her academic and professional life in Hong Kong before pursuing a PhD in Accounting and Finance in the UK. She now lectures at a university in London, where her research centres on digital accounting and financial accountability. Over the past few years, two surgeries in close succession, followed by professional setbacks, tested her in ways she hadn't anticipated. The fairness and order she had once taken for granted gave way beneath the weight of reality. Facing this double burden, physical and spiritual, she refused to let herself be trapped by disappointment. Instead, with a resilience distinctly her own, she began a long process of rebuilding: learning to “adapt, and grow stronger for it,” asking herself anew what kind of life she truly wanted, and choosing, with clear-eyed resolve, to protect her own wellbeing and find her way back to happiness. She was fortunate to have met, years earlier, a senior woman executive in her field who became a beacon, showing her that true resilience was never about being invulnerable. It was, instead, the wisdom and courage to gather up the pieces after one's worldview shatters, and to rebuild, piece by piece, an order entirely one's own."},
+  {num:"05", role:"研究者 · 现居德国", roleEn:"Researcher · Now Based in Germany",
+   bio:"小羊毕业于北京外国语大学，后赴剑桥大学完成研究生学习。此后多年在伦敦工作与生活，长期置身于高强度、快节奏的研究环境之中。在一个以男性为主导的学术与职场体系里，她不断尝试发出女性的声音，寻找表达与被理解的空间。这既是个人的坚持，也是对结构性现实的回应。然而，多年打拼之后，她逐渐意识到：既有路径未必通向理想的自我。离开伦敦，她与德国伴侣结婚，迁居德国。这一转变并非简单的“离开”，而是一种重新定位——在跨文化与人生阶段的转换中，重新思考女性、事业与自我之间的关系。",
+   bioEn:"After graduating from Beijing Foreign Studies University, Xiaoyang pursued postgraduate studies at the University of Cambridge. She then spent many years living and working in London, immersed in a demanding, fast-paced research environment. Within academic and professional systems largely dominated by men, she continually sought to make women's voices heard and to create space for expression and understanding. This was both a personal commitment and a response to structural realities. Yet after years of striving, she gradually came to realise that the established path might not lead her towards the person she aspired to become. She eventually left London, married her German partner, and moved to Germany. This transition was not simply a matter of “leaving”, but an act of reorientation—a chance to reconsider the relationship between womanhood, career, and selfhood amid shifts in culture and life stage.", face:"images/story/05.jpg", photo:"images/story/05b.jpg"},
+  {num:"06", role:"全球资本市场资深商业领袖", roleEn:"Senior Leader · Global Capital Markets",
+   bio:"Lin 是全球资本市场领域的资深商业领袖，负责与全球一些规模最大的机构投资者建立战略合作伙伴关系。目前，她领导劳埃德银行集团（Lloyds Banking Group）的资产管理业务，推动集团面向全球资产管理机构、资产所有者及财务投资人的业务战略。在高盛资产管理公司（Goldman Sachs Asset Management）任职期间，她曾推动公开市场与私募市场业务实现数十亿美元规模的增长，并就长期资本配置及平台整合为企业高管提供战略建议。除机构业务外，Lin 还是 TEDx 演讲者及行业思想领袖。她将心理学洞见应用于高风险决策与绩效提升，其工作横跨金融、领导力与行为科学三大领域。她的影响力获得了广泛认可，曾荣获“华人商业领袖奖”（Chinese Business Leader Award）及“投资界杰出女性”（Women in Investments）等荣誉，并获评“伦敦金融城杰出女性”（Top Woman in the City of London）。她还连续入选 EMPower Future Leaders 和 HERoes Women Role Models 榜单。Lin 毕业于牛津大学实验心理学专业。",
+   bioEn:"Lin is a senior business leader in global capital markets, leading strategic partnerships with some of the world's largest institutional investors. She currently leads the asset management franchise at Lloyds Banking Group, driving business strategy, client partnerships and growth across global asset managers, asset owners and financial sponsors. Previously, during her tenure at Goldman Sachs Asset Management, she drove multibillion-scale growth across public and private markets, advising C-suite executives on long-term capital allocation and platform integration. Beyond her institutional work, Lin is a TEDx speaker and thought leader. She brings psychological insights into high-stakes decision-making and performance. Her work sits at the intersection of finance, leadership, and behaviour science. Her impact has been recognised through the Chinese Business Leader Award and Women in Investments accolades. She has been named Top Woman in the City of London and has featured consecutively in the top 10 of the EMPower Future Leaders and HERoes Women Role Models lists. She is a graduate in Experimental Psychology from Oxford University.", face:"images/story/06.jpg", photo:"images/story/06b.jpg"},
+  {num:"07", role:"独立电影导演 · 编剧 · 制片人", roleEn:"Independent Filmmaker · Writer · Producer",
+   bio:"樊夏是常驻伦敦的独立电影导演、编剧及制片人，毕业于伦敦电影学院电影制作硕士专业。她参与过多部独立短片与纪录片的创作和制作，作品曾入围多个国际电影节。在进入电影行业前，她曾在伦敦一家科技公司从事六年媒体营销工作，积累了丰富的项目管理、内容制作与跨团队协作经验。",
+   bioEn:"Xia Fan is a London-based independent filmmaker working across writing, directing and producing. A graduate of the MA Filmmaking programme at the London Film School, she has contributed to a range of independent shorts and documentaries, with her work screened at international film festivals. Before moving into filmmaking, she spent six years working in media marketing at a London-based technology company, gaining extensive experience in project management, content production and cross-functional collaboration."},
+  {num:"08", role:"研究员 · 撰稿人 · 社群建设者", roleEn:"Researcher · Writer · Community Builder",
+   bio:"姜雅玲曾担任翻译和商业记者，如今身兼研究员、撰稿人，同时也在从事社群建设。这些看似不同的工作背后，贯穿始终的是同一个初衷：她希望让更多人透过一个个具体的人，而非标签和刻板印象，来真正认识中国。她创立了专注中国消费市场研究与策略咨询的 ApertureChina，并主笔消费者新闻简报 Following the Yuan，持续解读中国消费趋势。相关内容曾获 Financial Times、Reuters、Le Monde、Les Echos、South China Morning Post 及 Jing Daily 等媒体引用。2024年移居伦敦后，她发起了社群项目 People's Square，希望通过分享、对话和线下聚会，从人文与个体的角度呈现中国，而非依赖抽象概念或既定印象。她相信，真正的改变，往往始于身边人和自己能够触及的群体。",
+   bioEn:"Yaling Jiang is a former translator and business journalist who now works as a researcher, writer and community builder, all in service of one goal: helping the world see China through its people, not through headlines or stereotypes. She founded ApertureChina, a research and strategy consultancy focused on China's consumer markets, and writes Following the Yuan, a newsletter on Chinese consumer trends that has been cited by outlets including the Financial Times, Reuters, Le Monde, Les Echos, South China Morning Post and Jing Daily. After moving to London in 2024, she started People's Square, a community built around exploring China from a human, individual angle, through conversations, gatherings and shared stories rather than abstractions or stereotypes. She believes that real change starts with the people closest to you.", face:"images/story/08.jpg", photo:"images/story/08b.jpg"},
+  {num:"09", role:"高级 IT 商务经理", roleEn:"Senior IT Commercial Manager",
+   bio:"自移居英国，Kary一直在不同的文化、行业与身份之间寻找自己的位置。从审计、云计算，到如今在英国领先的养老金集团担任 Senior IT Commercial Manager，她习惯走出熟悉的边界，在不同领域之间寻找连接，也始终相信人生不必只有一条既定的路径。多年的跨文化生活，以及参与不同国际女性组织与社群的经历，让她越来越关注那些身份标签背后不容易被看见的部分——一个人的选择、犹豫、转弯，以及重新出发。别人看到的或许是一个在英国工作的职业女性，但对Kary而言，真正塑造自己的，是一路以来不断与世界碰撞、与自己对话的过程。工作之外，她通过跑步、旅行和对生活的好奇保持能量，也乐于倾听来自不同背景的女性故事。她相信，被看见只是故事的开始；真正的连接，始于愿意停下来，听见一个人如何成为今天的自己。",
+   bioEn:"Since moving to the UK, Kary has been navigating the spaces between cultures, industries and identities, continually redefining where she belongs. Her career has taken her from audit and cloud to her current role as a Senior IT Commercial Manager at one of the UK's leading pension groups. She has never been afraid to step beyond the familiar, finding connections between seemingly different worlds and believing that there is rarely only one path worth taking. Years of living across cultures, alongside her involvement in international women's organisations and communities, have made her increasingly curious about what lies beneath the labels we give ourselves and others — the choices, doubts, detours and new beginnings that rarely make it into the visible version of a life. To others, she may simply appear to be a professional woman building her career in the UK; for Kary, what has shaped her most is the constant process of encountering the world, questioning it, and learning to understand herself along the way. Outside work, she finds energy in running, travelling and staying curious about life, while always making space to listen to women from different backgrounds and hear the stories behind their identities. She believes being seen is only the beginning; true connection starts when we pause long enough to listen to how someone became who they are today.", face:"images/story/09.jpg", photo:"images/story/09b.jpg"},
+  {num:"10", role:"中国政治学者", roleEn:"Lecturer in Chinese Politics",
+   bio:"姚嫣然博士现任伦敦国王学院（King's College London）中国政治讲师，主要从事中国政治与政治经济学领域的教学与研究。她于2018年获得香港大学政治与公共行政博士学位。在加入伦敦国王学院之前，她曾在香港大学任教，并担任非营利管理硕士项目副主任三年，积累了丰富的教学与项目管理经验。她的研究兴趣主要集中在公民社会与威权主义、中国政治经济以及公共与非营利管理等领域。作为政治学者，她尤其关注公民社会与威权政体之间的互动关系，探讨在全球政治自由化经历数十年后、威权主义再度抬头的背景下，公民社会所面临的问责挑战。在教学方面，姚嫣然博士目前在本科阶段讲授“当代中国的商业与创业”，并在研究生阶段讲授“在中国做生意”等课程，体现出她在中国政治、经济与社会议题上的跨领域教学能力。她目前隶属于伦敦国王学院 Lau China Institute、全球事务学院以及社会科学与公共政策学院。",
+   bioEn:"Dr Yanran Yao is a Lecturer in Chinese Politics at King's College London, where her teaching and research focus on Chinese politics and political economy. She received her PhD in Politics and Public Administration from the University of Hong Kong in 2018. Prior to joining King's, she taught at the University of Hong Kong and served for three years as Deputy Programme Director of the Master of Nonprofit Management programme, gaining extensive experience in both teaching and programme management. Her research interests centre on civil society and authoritarianism, China's political economy, and public and nonprofit management. As a political scientist, she is particularly interested in the relationship between civil society and authoritarian regimes, examining the accountability challenges facing civil society amid the resurgence of authoritarianism following decades of global political liberalisation. In her teaching, Dr Yao currently delivers the undergraduate module Business and Entrepreneurship in Contemporary China and the postgraduate module Doing Business in China, reflecting her interdisciplinary expertise across Chinese politics, economics, and society. She is affiliated with the Lau China Institute, the School of Global Affairs, and the Faculty of Social Science & Public Policy at King's College London."},
+  {num:"11", role:"历史与国际关系博士生", roleEn:"PhD Candidate · History & IR",
+   bio:"Hongli 在伦敦国王大学就读博士，从事历史与国际关系方向的研究。同时，她在伦敦政治经济学院做行政工作。她有丰富的跨国教育经历，本科就读于昆士兰大学，后于墨尔本大学完成硕士学位。结束澳洲长达7年的学习后，她申请到了伦敦政治经济学院的国际关系硕士，因此来到了英国这片土地。因受到英国和澳洲两个国家的文化交流和碰撞，她的博士话题从反殖民和女性主义出发，思考大英帝国在印度殖民地的国家主权表现形式变化。Hongli 已经在伦敦生活、工作和学习4年时间，她非常喜欢这个城市。她相信选择奋斗的方向比盲目努力更重要。方向选择对了，哪怕经历了多次的失败，哪怕走得慢一点，成功也只是时间——从量变到质变的问题。在伦敦这个充满着机会、挑战、竞争和内卷的城市，她认为选择相信自己、自我鼓励并不断提升能力是非常重要的。她喜欢不断挑战自己并跳出舒适圈，把失败和拒绝当作未来成功的机会成本。她一直相信这样一句话：“永远不要限制自我，勇敢努力往前走。”通过分享自己在英国学习和工作的经历，她的分享鼓励了许多同样在英国求学的女性。",
+   bioEn:"Hongli is a PhD candidate at King's College London, while working part-time at the London School of Economics and Political Science. Having finished her undergraduate and master's degrees in Australia, in the University of Queensland and Melbourne respectively, she moved to the UK and undertook another master's in International Relations at LSE. Having been influenced by the transnational education experience and cultural exchange, her doctoral research takes a decolonial and feminist lens to explore imperial sovereign performativity of the British Raj in the late nineteenth century. Hongli has a deep affection for the city of London after living here for almost four years. She believes setting a right direction sometimes means more than simply working hard. If the path is right, success becomes a matter of time despite setbacks and slow process. Living in a vibrant city defined by opportunities, challenges, competition, pressure, loneliness, and so on, she thinks it is important to stay confident, think positively, and grow in community (though it does not always feel easy). She learned from her past experience to view failures and rejections as the opportunity costs for future achievements and continue to step out of her comfort zone. By sharing her experiences of studying and working in the UK, she has inspired other women pursuing their education here.", face:"images/story/11.jpg", photo:"images/story/11b.jpg"},
+  {num:"12", role:"数据分析师 · 内容创作者", roleEn:"Data Professional · Content Creator",
+   bio:"Serina，28岁，在英国从事5年数据相关工作，同时也是一位小红书博主。她本科就读中英2+2专业，在苏州读完前两年后来到英国利物浦继续后两年的学业。本科结束后她选择申请了与本科会计金融不同的专业方向——商业分析，并前往UCL完成硕士学业深造。作为一名在英国学习、生活、工作的女性，Serina诠释了心态对于一个人克服困难、战胜挫折的重要性。在遇到语言、文化等障碍时，她选择前往中餐馆打工，锻炼语言能力，更好地融入当地社会；在留英求职时，连续收到几十封拒信却依然没有放弃，最终收到了理想公司的offer。当提到博主生涯时，Serina最初只是分享自己在英求职、生活相关的经历，慢慢收到的正反馈也让她相信，她的分享正在帮助并激励着一些像她一样经历过或正在经历迷茫的女性。",
+   bioEn:"Serina, 28, has worked in data-related roles in the UK for five years and is also a lifestyle blogger on Xiaohongshu (RED). She studied a 2+2 program, completing her first two undergraduate years in Suzhou, China before moving to Liverpool, UK for her final two years. After finishing her undergraduate degree in accounting and finance, she chose a different path for her master's, pursuing Business Analytics at UCL. As a woman studying, living, and working in the UK, Serina embodies how much mindset matters in overcoming hardship and setbacks. When she faced language and cultural barriers, she took a job at a Chinese restaurant to practice her English and integrate better into local society. During her UK job search, she received dozens of rejection letters in a row but never gave up, eventually landing an offer from her dream company. As for her blogging journey, Serina started out simply sharing her experiences of job hunting and living in the UK. The positive feedback she gradually received convinced her that her posts are helping and inspiring other women who have faced, or are facing, similar uncertainty.", face:"images/story/12.jpg", photo:"images/story/12b.jpg"},
+  /* —— 13-16 保留占位：Stephy / Amy 已询问，等待回复 —— */
+  {num:"13", role:"待揭晓", roleEn:"To be revealed", bio:"更多故事正在收录中。", bioEn:"More stories are being gathered.", tba:true},
+  {num:"14", role:"待揭晓", roleEn:"To be revealed", bio:"", bioEn:"", tba:true},
+  {num:"15", role:"待揭晓", roleEn:"To be revealed", bio:"", bioEn:"", tba:true},
+  {num:"16", role:"待揭晓", roleEn:"To be revealed", bio:"", bioEn:"", tba:true},
+];
+
+/* ================= 中英切换 ================= */
+const I18N = {
+  zh: {
+    "nav.brand":"她的故事 · HER STORY",
+    "nav.concept":"概念","nav.works":"作品","nav.about":"关于",
+    "hero.light.tag":"光 · LIGHT",
+    "hero.light.h1":'她 的 故 事<span class="en">HER STORY</span>',
+    "hero.light.sub":"可见性与被识别。<br>被看见、被定义、被观看着的显性人生。",
+    "hero.shadow.tag":"影 · SHADOW",
+    "hero.shadow.h1":'在光与影之间<span class="en">BETWEEN LIGHT &amp; SHADOW</span>',
+    "hero.shadow.sub":"未被言说与被遮蔽的经验。<br>沉默、未知、表象之下的真实。",
+    "hero.seam":"跨媒介叙事艺术展 · 线上展 | ONLINE EDITION",
+    "concept.kicker":"Curatorial Concept · 策展概念",
+    "concept.h2":'可见，但未被充分理解<span class="en">Visible, yet rarely fully understood</span>',
+    "concept.lead":'在当代语境中，亚裔女性常常处于一种"可见但未被充分理解"的位置——形象被频繁观看，复杂经验却较少进入公共叙事。本展以<b>肖像摄影</b>与<b>第一人称声音</b>的并置建立张力：图像呈现"被观看"的客体状态，声音则构成"自我叙述"的主体觉醒。',
+    "concept.light.word":"光","concept.light.cn":"LIGHT",
+    "concept.light.p":"指向可见性与被识别。代表着那些被看见、被定义的显性经验与表达。",
+    "concept.shadow.word":"影","concept.shadow.cn":"SHADOW",
+    "concept.shadow.p":"指向未被言说与被遮蔽的经验。象征着沉默、未知与潜藏在表象之下的真实。",
+    "concept.quote":'在两者之间建立通道，使观众从"观看"转向"倾听"。<small>To build a passage between the two — from seeing, toward listening.</small>',
+    "works.kicker":"Works · 作品",
+    "works.h2":'十六位女性，十六段声音<span class="en">16 Women · 16 Voices</span>',
+    "works.lead":"点击任意肖像，聆听她自己的故事。目前为原型版本，肖像与音频素材将陆续接入。",
+    "works.listen":"聆听 · LISTEN",
+    "nav.invite":"生命画像",
+    "invite.kicker":"Life Portrait · 生命画像征集",
+    "invite.h2":'你的生命是什么？<span class="en">What Is Your Life?</span>',
+    "invite.lead":'以绘画、书写或摄影的方式，回答"你的生命是什么"——这是 Viva la Vida 的全球核心项目。你的作品将汇聚成线上生命画像墙，与全世界分享。',
+    "invite.cta":"提交我的生命画像 →",
+    "invite.wallTitle":"生命画像墙 · LIFE PORTRAIT WALL",
+    "invite.slot":"你的生命画像<br>YOUR PORTRAIT",
+    "invite.previewTitle":"在线查看征集设计 · VIEW THE COLLECTION",
+    "invite.openFull":"在新窗口打开 ↗",
+    "float.label":"生命画像",
+    "about.kicker":"About · 关于",
+    "about.h2":'关于线上展<span class="en">About the Online Edition</span>',
+    "about.lead":"《她的故事：在光与影之间》依托图像、声音两大媒介搭建多层叙事场域。本线上展呈现 16 位拥有多元文化、跨国成长背景的亚裔女性——她们来自科技、学术、金融、医疗、时尚、写作等多个行业。",
+    "about.col1.h":"主办 · CURATED BY","about.col1.p":"AWDPI 亚裔女性国际发展计划<br>Asian Women's Development Programme International",
+    "about.col2.h":"呈现 · PRESENTED AT","about.col2.p":"2026 Chinese Culture Week<br>8 月 16 日 · 艺术剧场女性力量对谈",
+    "about.col3.h":"形式 · FORMAT","about.col3.p":"肖像摄影 · 第一人称声音档案<br>线上展 · Online Exhibition",
+    "about.copres.title":"联合呈现 · CO-PRESENTED BY",
+    "about.awdpi.name":"AWDPI · 亚裔女性国际发展计划",
+    "about.awdpi.desc":'AWDPI 是一家国际公益组织，致力于消除针对海外亚裔女性的歧视与性别暴力、促进其赋能与发展，由 2020 年成立的 Avoice（海外华人女性保护项目）发展而来。在本项目中，AWDPI 负责线下展览的策划与执行，以及 16 位参与者的肖像摄影与声音档案采集。<a class="link" href="https://awdpi.org" target="_blank" rel="noopener">访问官网 →</a>',
+    "about.viva.name":"Viva la Vida",
+    "about.viva.desc":'Viva la Vida 是以"探索生命意义"为主题的全球艺术项目，源自 2018 年墨西哥的街头艺术实验，通过"什么是你的生命"与"我们仍有艺术"两大国际项目汇聚 60 多个国家的创作者，并拥有全球最大的生命画像数据库。在本项目中，Viva la Vida 负责线上展览的搭建与运营，并策划"生命画像互动征集"等社区参与板块。<a class="link" href="https://www.vivalavida.today/" target="_blank" rel="noopener">访问官网 →</a>',
+    "footer.line":"她的故事：在光与影之间 · 线上展 ｜ HER STORY: BETWEEN LIGHT AND SHADOW · ONLINE EDITION",
+    "modal.title":"她的故事 · Her Story",
+    "modal.story":"采访故事 · INTERVIEW STORY",
+    "modal.pno":"采访者 {n}",
+    "modal.playReady":"播放声音档案 / Play Audio",
+    "modal.playPending":"声音档案待接入 / Audio incoming",
+  },
+  en: {
+    "nav.brand":"HER STORY",
+    "nav.concept":"Concept","nav.works":"Works","nav.about":"About",
+    "hero.light.tag":"LIGHT · THE SEEN",
+    "hero.light.h1":'HER STORY<span class="en">Between Light and Shadow</span>',
+    "hero.light.sub":"Visibility and recognition.<br>The seen, the defined — lives lived in the open.",
+    "hero.shadow.tag":"SHADOW · THE UNSPOKEN",
+    "hero.shadow.h1":'BETWEEN LIGHT &amp; SHADOW<span class="en">Her Story · Online Edition</span>',
+    "hero.shadow.sub":"The unspoken, the veiled.<br>Silence — the truth beneath the surface.",
+    "hero.seam":"CROSS-MEDIA NARRATIVE EXHIBITION · ONLINE EDITION",
+    "concept.kicker":"Curatorial Concept",
+    "concept.h2":'Visible, yet rarely fully understood<span class="en">被看见，却很少真正被理解</span>',
+    "concept.lead":'In contemporary contexts, Asian women often occupy a position of being "visible yet rarely fully understood" — their images are frequently viewed, yet their complex experiences rarely enter public narrative. This exhibition sets up a tension by juxtaposing <b>portrait photography</b> with <b>first-person audio</b>: the image shows the object state of "being seen," while the voice constitutes the subject awakening of "self-narration."',
+    "concept.light.word":"Light","concept.light.cn":"光",
+    "concept.light.p":"Points to visibility and recognition — the explicit experiences and expressions that are seen and defined.",
+    "concept.shadow.word":"Shadow","concept.shadow.cn":"影",
+    "concept.shadow.p":"Points to the unspoken and veiled — the silence, the unknown, and the truths hidden beneath the surface.",
+    "concept.quote":'To build a passage between the two — from seeing, toward listening.<small>在两者之间建立通道，使观众从"观看"转向"倾听"。</small>',
+    "works.kicker":"Works",
+    "works.h2":'16 Women · 16 Voices<span class="en">十六位女性，十六段声音</span>',
+    "works.lead":"Click any portrait to hear her own story. This is a prototype — portraits and audio are being added.",
+    "works.listen":"LISTEN",
+    "nav.invite":"Life Portrait",
+    "invite.kicker":"Life Portrait Collection",
+    "invite.h2":'What Is Your Life?<span class="en">你的生命是什么？</span>',
+    "invite.lead":'Answer "What is your life?" through drawing, writing, or photography — the global core project of Viva la Vida. Your portrait will join an online Life Portrait Wall, shared with the world.',
+    "invite.cta":"Submit My Life Portrait →",
+    "invite.wallTitle":"LIFE PORTRAIT WALL · 生命画像墙",
+    "invite.slot":"YOUR PORTRAIT<br>你的生命画像",
+    "invite.previewTitle":"VIEW THE COLLECTION · 在线查看征集设计",
+    "invite.openFull":"Open Fullscreen ↗",
+    "float.label":"LIFE PORTRAIT",
+    "about.kicker":"About",
+    "about.h2":'About the Online Edition<span class="en">关于线上展</span>',
+    "about.lead":'"Her Story: Between Light and Shadow" builds a multi-layered narrative field across image and sound. This online edition presents 16 Asian women with multicultural, cross-border backgrounds — from tech, academia, finance, healthcare, fashion, and writing.',
+    "about.col1.h":"Curated by","about.col1.p":"Asian Women's Development Programme International<br>AWDPI 亚裔女性国际发展计划",
+    "about.col2.h":"Presented at","about.col2.p":"2026 Chinese Culture Week<br>Aug 16 · Women in Art Industry Talk",
+    "about.col3.h":"Format","about.col3.p":"Portrait Photography · First-person Audio<br>Online Exhibition",
+    "about.copres.title":"CO-PRESENTED BY · 联合呈现",
+    "about.awdpi.name":"AWDPI · Asian Women's Development Programme International",
+    "about.awdpi.desc":'AWDPI is an international public-interest organization working to end discrimination and gender-based violence against Asian women abroad and to empower them. It grew out of Avoice (Protection of Chinese Overseas Women), founded in 2020. In this project AWDPI curates the physical exhibition and produces the portraits and first-person audio of the 16 participants. <a class="link" href="https://awdpi.org" target="_blank" rel="noopener">Official site →</a>',
+    "about.viva.name":"Viva la Vida",
+    "about.viva.desc":'Viva la Vida is a global art project exploring the meaning of life, born from a 2018 street art experiment in Mexico. Through "What is Your Life" and "We Still Have Art" it unites creators from more than 60 countries and holds the largest life-portrait database in the world. In this project Viva la Vida builds and operates the online exhibition and curates community participation such as the Life Portrait collection. <a class="link" href="https://www.vivalavida.today/" target="_blank" rel="noopener">Official site →</a>',
+    "footer.line":"HER STORY: BETWEEN LIGHT AND SHADOW · ONLINE EDITION ｜ 她的故事：在光与影之间 · 线上展",
+    "modal.title":"Her Story",
+    "modal.story":"INTERVIEW STORY · 采访故事",
+    "modal.pno":"Interviewee {n}",
+    "modal.playReady":"Play Audio",
+    "modal.playPending":"Audio file incoming",
+  }
+};
+
+let LANG = localStorage.getItem("herstory-lang") || "zh";
+const grid = document.getElementById("grid");
+const overlay = document.getElementById("overlay");
+let audioEl = null;
+let currentStory = null;
+
+const t = key => (I18N[LANG] && I18N[LANG][key] !== undefined) ? I18N[LANG][key] : (I18N.zh[key] ?? key);
+
+function applyLang(){
+  document.documentElement.lang = LANG === "zh" ? "zh-CN" : "en";
+  document.title = LANG === "zh"
+    ? "她的故事：在光与影之间 · Her Story: Between Light and Shadow"
+    : "Her Story: Between Light and Shadow · 她的故事：在光与影之间";
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const k = el.dataset.i18n;
+    if (I18N[LANG][k] !== undefined) el.innerHTML = I18N[LANG][k];
+  });
+  document.getElementById("langBtn").textContent = LANG === "zh" ? "EN" : "中";
+  renderCards();
+  if (overlay.classList.contains("open") && currentStory) renderStory(currentStory);
+}
+
+/* ================= 画廊渲染 ================= */
+function renderCards(){
+  grid.innerHTML = STORIES.map((s,i)=>{
+    if(s.tba){
+      return `<div class="card tba">
+        <div class="face"><div class="mask"><div class="m1">${s.num}</div><div class="m2">STORY PENDING</div></div></div>
+        <span class="num">${s.num}</span>
+      </div>`;
+    }
+    const role = LANG === "zh" ? s.role : s.roleEn;
+    const sub  = LANG === "zh" ? s.roleEn : s.role;
+    return `<div class="card" data-i="${i}">
+      <div class="face${s.face ? " has-photo" : ""}"${s.face ? ` style="background-image:url('${s.face}')"` : ""}><span class="num">${s.num}</span>
+        <div class="meta">
+          <div class="role">${role}</div>
+          <div class="role-en">${sub}</div>
+        </div>
+        <span class="listen"><span class="dot">▶</span>${t("works.listen")}</span>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+grid.addEventListener("click", e=>{
+  const card = e.target.closest(".card");
+  if(!card || card.classList.contains("tba")) return;
+  currentStory = STORIES[card.dataset.i];
+  renderStory(currentStory);
+});
+
+function renderStory(s){
+  if(audioEl){ audioEl.pause(); audioEl = null; }
+  const zh = LANG === "zh";
+  document.getElementById("oNum").textContent = s.num;
+  document.getElementById("oRole").textContent = zh ? s.role : s.roleEn;
+  document.getElementById("oRoleEn").textContent = zh ? s.roleEn : s.role;
+  document.getElementById("oPno").textContent = t("modal.pno").replace("{n}", s.num);
+  document.getElementById("oTitle").textContent = t("modal.title");
+  const oCover = document.getElementById("oCover");
+  oCover.classList.toggle("has-photo", !!s.photo);
+  oCover.style.backgroundImage = s.photo ? `url('${s.photo}')` : "";
+  document.getElementById("oBio").textContent = zh ? (s.bio || "") : (s.bioEn || s.bio || "");
+  const st = zh ? (s.story || s.storyEn || "") : (s.storyEn || s.story || "");
+  document.getElementById("oStoryTitle").textContent = t("modal.story");
+  document.getElementById("oStory").textContent = st;
+  document.getElementById("oStoryWrap").hidden = !st;
+  const btn = document.getElementById("playBtn");
+  btn.classList.remove("playing");
+  btn.dataset.audio = s.audio || "";
+  document.getElementById("playLabel").textContent = s.audio ? t("modal.playReady") : t("modal.playPending");
+  overlay.classList.add("open");
+  overlay.setAttribute("aria-hidden","false");
+}
+
+function closeOverlay(){
+  overlay.classList.remove("open");
+  overlay.setAttribute("aria-hidden","true");
+  if(audioEl){ audioEl.pause(); audioEl = null; }
+}
+
+document.getElementById("closeBtn").addEventListener("click", closeOverlay);
+overlay.addEventListener("click", e=>{ if(e.target === overlay) closeOverlay(); });
+document.addEventListener("keydown", e=>{ if(e.key === "Escape") closeOverlay(); });
+
+document.getElementById("playBtn").addEventListener("click", function(){
+  const url = this.dataset.audio;
+  if(!url){
+    alert(LANG === "zh"
+      ? "声音档案素材待接入——正式版将在此播放她自己的声音。\n\nAudio file not connected yet."
+      : "Audio file not connected yet — the final version will play her own voice here.");
+    return;
+  }
+  if(audioEl && !audioEl.paused){ audioEl.pause(); this.classList.remove("playing"); return; }
+  audioEl = new Audio(url);
+  audioEl.play(); this.classList.add("playing");
+  audioEl.onended = ()=> this.classList.remove("playing");
+});
+
+document.getElementById("langBtn").addEventListener("click", ()=>{
+  LANG = LANG === "zh" ? "en" : "zh";
+  localStorage.setItem("herstory-lang", LANG);
+  applyLang();
+});
+
+/* 滚动渐显 */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{ if(en.isIntersecting) en.target.classList.add("in"); });
+},{threshold:.15});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+
+applyLang();
+</script>
+</body>
+</html>
